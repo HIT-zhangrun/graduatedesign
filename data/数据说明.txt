@@ -1,0 +1,9 @@
+matrix 600x16
+
+chirp01sample001|chirp02sample001|chirp3sample001|......|chirp16sample001
+chirp01sample002|chirp02sample002|chirp3sample002|......|chirp16sample002
+chirp01sample003|chirp02sample003|chirp3sample003|......|chirp16sample003
+chirp01sample004|chirp02sample004|chirp3sample004|......|chirp16sample004
+......
+chirp01sample599|chirp02sample599|chirp3sample599|......|chirp16sample599
+chirp01sample600|chirp02sample600|chirp3sample600|......|chirp16sample600
