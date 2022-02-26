@@ -29,23 +29,23 @@ phase_diff(data, param);
 function [ret, data] = data_init(range, param)
     switch(range)
     case 2.9
-    A = load('../data/RAW_2.9m.mat');
+    A = load('../../data/RAW_2.9m.mat');
     case 3.6
-    A = load('../data/RAW_3.6m.mat');
+    A = load('../../data/RAW_3.6m.mat');
     case 4.0
-    A = load('../data/RAW_4.0m.mat');
+    A = load('../../data/RAW_4.0m.mat');
     case 5.99
-    A = load('../data/RAW2_5.990m.mat');
+    A = load('../../data/RAW2_5.990m.mat');
     case 7.25
-    A = load('../data/RAW2_7.250m.mat');
+    A = load('../../data/RAW2_7.250m.mat');
     case 2.983
-    A = load('../data/RAW2_M_2.983m.mat');
+    A = load('../../data/RAW2_M_2.983m.mat');
     case 5.05
-    A = load('../data/RAW2_M_5.050m.mat');
+    A = load('../../data/RAW2_M_5.050m.mat');
     case 1.132
-    A = load('../data/RAW2_M2_1.132m.mat');
+    A = load('../../data/RAW2_M2_1.132m.mat');
     case 2.25
-    A = load('../data/RAW2_M2_2.250m.mat');
+    A = load('../../data/RAW2_M2_2.250m.mat');
     default
     fprintf("无此名称的数据\n");
     ret = 1;
