@@ -1,6 +1,6 @@
 ################################################################################
 # 自动生成的文件。不要编辑！
-# Toolchain: GNU Tools for STM32 (9-2020-q2-update)
+# Toolchain: GNU Tools for STM32 (10.3-2021.10)
 ################################################################################
 
 -include ../makefile.init
@@ -47,6 +47,9 @@ BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ART
 EXECUTABLES += \
 fft_range.elf \
 
+MAP_FILES += \
+fft_range.map \
+
 SIZE_OUTPUT += \
 default.size.stdout \
 
@@ -56,9 +59,6 @@ fft_range.list \
 OBJCOPY_HEX += \
 fft_range.hex \
 
-OBJCOPY_BIN += \
-fft_range.bin \
-
 
 # 所有目标
 all: main-build
@@ -67,8 +67,8 @@ all: main-build
 main-build: fft_range.elf secondary-outputs
 
 # 工具调用
-fft_range.elf: $(OBJS) $(USER_OBJS) C:\Users\MYDOC\EE_project\graduate_design\graduatedesign\code\stm32\fft_range\STM32H750VBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "fft_range.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\MYDOC\EE_project\graduate_design\graduatedesign\code\stm32\fft_range\STM32H750VBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="fft_range.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+fft_range.elf fft_range.map: $(OBJS) $(USER_OBJS) C:\Users\MYDOC\EE_project\graduate_design\graduatedesign\code\stm32\fft_range\STM32H750VBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "fft_range.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\MYDOC\EE_project\graduate_design\graduatedesign\code\stm32\fft_range\STM32H750VBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="fft_range.map" -Wl,--gc-sections -static  -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo '已结束构建目标： $@'
 	@echo ' '
 
@@ -87,17 +87,12 @@ fft_range.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo '已结束构建： $@'
 	@echo ' '
 
-fft_range.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "fft_range.bin"
-	@echo '已结束构建： $@'
-	@echo ' '
-
 # 其他目标
 clean:
-	-$(RM) default.size.stdout fft_range.bin fft_range.elf fft_range.hex fft_range.list
+	-$(RM) default.size.stdout fft_range.elf fft_range.hex fft_range.list fft_range.map
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX) $(OBJCOPY_BIN)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'

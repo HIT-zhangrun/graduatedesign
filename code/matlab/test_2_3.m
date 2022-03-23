@@ -25,7 +25,6 @@ end
 normal_fft(data, param);
 phase_diff(data, param);
 
-
 function [ret, data] = data_init(range, param)
     switch(range)
     case 2.9
@@ -53,6 +52,11 @@ function [ret, data] = data_init(range, param)
     end
 
     data = A.ADCBuf;
+
+    fid = fopen('../../data/data.bin', 'w');
+    fwrite(fid, data, 'int8');
+    fclose(fid);
+
     data_sum = sum(data, 2);
     data_mean = mean(data_sum);
     for i = 1 : param.ADC_N
@@ -70,7 +74,7 @@ function ret = normal_fft(data, param)
     FFT_ABS = abs(FFT(1 : param.N / 2));
     [x, ] = find(FFT_ABS == max(FFT_ABS), 1);
     range = x_range(x);
-    %fprintf("FFT测频:%fHz\n", x_frequent(x));
+    %fprintf("FFT测距频率:%fHz\n", x_frequent(x));
     fprintf("FFT测距:%fm\n", range);
     figure(1);
     plot(x_range, FFT_ABS);
@@ -96,7 +100,7 @@ function ret = phase_diff(data, param)
     n_1 = round(x_1 * param.ADC_N / (2 * param.N));
     frequent_B = n_1 * 2 * param.fs / param.ADC_N + ...
     param.fs * delta_phase / (pi * param.ADC_N);
-    %fprintf("相位法测频:%fHz\n", frequent_B);
+    %fprintf("相位法测距:%fHz\n", frequent_B);
     phase_B = phase_1 + (param.ADC_N - 1) * x_1 * pi / param.N - ...
     (param.ADC_N - 1) * frequent_B * param.T * pi / param.ADC_N;
     R1 = frequent_B * param.T * param.c / (2 * param.B);

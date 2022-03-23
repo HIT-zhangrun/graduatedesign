@@ -261,8 +261,20 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 {
   /* USER CODE BEGIN 6 */
-  USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
+  static uint32_t buff_len = 0;
+  static char buf[] = "\r\n\r\n";
+  buff_len += *Len;
+
+  if(buff_len > (APP_RX_DATA_SIZE - USB_ONCE_RX_MAX_LEN))
+  {
+      CDC_Transmit_FS(UserRxBufferFS, buff_len + *Len);
+      CDC_Transmit_FS(buf, 4);
+      buff_len = 0;
+  }
+
+  USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[buff_len]);
   USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+
   return (USBD_OK);
   /* USER CODE END 6 */
 }
