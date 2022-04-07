@@ -1,6 +1,0 @@
-../USB_DEVICE/App/usb_debug.c:14:27:usb_putchar	24	static
-../USB_DEVICE/App/usb_debug.c:22:27:usb_putstring	16	static
-../USB_DEVICE/App/usb_debug.c:32:27:usb_putnum	48	static
-../USB_DEVICE/App/usb_debug.c:58:27:usb_debug_handle	16	static
-../USB_DEVICE/App/usb_debug.c:118:20:USB_DEBUG	16	static
-../USB_DEVICE/App/usb_debug.c:130:9:usb_debug_test	8	static

@@ -22,7 +22,8 @@
 #include "usbd_cdc_if.h"
 
 /* USER CODE BEGIN INCLUDE */
-
+#include <stdarg.h>
+#include "usart.h"
 /* USER CODE END INCLUDE */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -261,19 +262,24 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 {
   /* USER CODE BEGIN 6 */
-  static uint32_t buff_len = 0;
-  static char buf[] = "\r\n\r\n";
-  buff_len += *Len;
+  //static uint32_t buff_len = 0;
+  //static char buf[] = "\r\n\r\n";
+  //buff_len += *Len;
 
-  if(buff_len > (APP_RX_DATA_SIZE - USB_ONCE_RX_MAX_LEN))
-  {
-      CDC_Transmit_FS(UserRxBufferFS, buff_len + *Len);
-      CDC_Transmit_FS(buf, 4);
-      buff_len = 0;
-  }
+  //if(buff_len > (APP_RX_DATA_SIZE - USB_ONCE_RX_MAX_LEN))
+  //{
+  //    CDC_Transmit_FS(UserRxBufferFS, buff_len + *Len);
+  //    CDC_Transmit_FS(buf, 4);
+  //    buff_len = 0;
+  //}
 
-  USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[buff_len]);
-  USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+  //USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[buff_len]);UserRxBufferFS
+	HAL_UART_Transmit(&huart2,"test\r\n",6,100);
+	usb_debug("test\r\n");
+	//usb_debug("%s\r\n", *Len);
+
+	USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
+    USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 
   return (USBD_OK);
   /* USER CODE END 6 */
@@ -328,7 +334,18 @@ static int8_t CDC_TransmitCplt_FS(uint8_t *Buf, uint32_t *Len, uint8_t epnum)
 }
 
 /* USER CODE BEGIN PRIVATE_FUNCTIONS_IMPLEMENTATION */
+uint8_t usb_debug(const char *format, ...)
+{
+    va_list args;
+    uint32_t length;
 
+    va_start(args, format);
+    length = vsnprintf((char *)UserTxBufferFS, APP_TX_DATA_SIZE, (char *)format, args);
+    va_end(args);
+    CDC_Transmit_FS(UserTxBufferFS, length);
+
+    return 0;
+}
 /* USER CODE END PRIVATE_FUNCTIONS_IMPLEMENTATION */
 
 /**

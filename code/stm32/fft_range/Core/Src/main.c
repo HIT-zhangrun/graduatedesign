@@ -18,13 +18,13 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "usart.h"
 #include "usb_device.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "usbd_cdc_if.h"
-#include "usb_debug.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -66,6 +66,7 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 
+  char buf[] = "test\r\n";
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -74,6 +75,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
+  int32_t i = 0;
 
   /* USER CODE END Init */
 
@@ -87,6 +89,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USB_DEVICE_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -95,7 +98,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	usb_debug_test();
+  //HAL_UART_Transmit(&huart2,buf,6,100);//串口1发送接收buff里的东西
+	//usb_debug("test %d\r\n", i++);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
