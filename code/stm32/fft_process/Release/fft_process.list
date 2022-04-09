@@ -15,9 +15,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, DATA
   5 .data         00000160  24000000  080051a8  00020000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .bss          00001c44  24000160  08005308  00020160  2**2
+  6 .bss          000027cc  24000160  08005308  00020160  2**2
                   ALLOC
-  7 ._user_heap_stack 00001404  24001da4  08005308  00021da4  2**0
+  7 ._user_heap_stack 00001404  2400292c  08005308  0002292c  2**0
                   ALLOC
   8 .ARM.attributes 0000002e  00000000  00000000  00020160  2**0
                   CONTENTS, READONLY
@@ -311,7 +311,7 @@ Disassembly of section .text:
  8000544:	4801      	ldr	r0, [pc, #4]	; (800054c <OTG_FS_IRQHandler+0x8>)
  8000546:	f000 bc85 	b.w	8000e54 <HAL_PCD_IRQHandler>
  800054a:	bf00      	nop
- 800054c:	24001668 	.word	0x24001668
+ 800054c:	240021f0 	.word	0x240021f0
 
 08000550 <HAL_GPIO_EXTI_Callback>:
  8000550:	f5b0 5f00 	cmp.w	r0, #8192	; 0x2000
@@ -346,7 +346,7 @@ Disassembly of section .text:
  8000590:	e7fc      	b.n	800058c <_sbrk+0x28>
  8000592:	bf00      	nop
  8000594:	2400017c 	.word	0x2400017c
- 8000598:	24001da8 	.word	0x24001da8
+ 8000598:	24002930 	.word	0x24002930
  800059c:	24080000 	.word	0x24080000
  80005a0:	00000400 	.word	0x00000400
 
@@ -463,7 +463,7 @@ Disassembly of section .text:
  80006a4:	24000160 	.word	0x24000160
  80006a8:	080051a8 	.word	0x080051a8
  80006ac:	24000160 	.word	0x24000160
- 80006b0:	24001da4 	.word	0x24001da4
+ 80006b0:	2400292c 	.word	0x2400292c
 
 080006b4 <ADC3_IRQHandler>:
  80006b4:	e7fe      	b.n	80006b4 <ADC3_IRQHandler>
@@ -6492,7 +6492,7 @@ Disassembly of section .text:
  8004290:	bd10      	pop	{r4, pc}
  8004292:	bf00      	nop
  8004294:	24000188 	.word	0x24000188
- 8004298:	24000c64 	.word	0x24000c64
+ 8004298:	240017ec 	.word	0x240017ec
  800429c:	24000464 	.word	0x24000464
 
 080042a0 <CDC_Transmit_FS>:
@@ -6531,7 +6531,7 @@ Disassembly of section .text:
  80042f0:	e8bd 4010 	ldmia.w	sp!, {r4, lr}
  80042f4:	b004      	add	sp, #16
  80042f6:	4770      	bx	lr
- 80042f8:	24000c64 	.word	0x24000c64
+ 80042f8:	240017ec 	.word	0x240017ec
 
 080042fc <find_head>:
  80042fc:	b538      	push	{r3, r4, r5, lr}
@@ -6605,40 +6605,40 @@ Disassembly of section .text:
 08004390 <CDC_Receive_FS>:
  8004390:	b538      	push	{r3, r4, r5, lr}
  8004392:	4c13      	ldr	r4, [pc, #76]	; (80043e0 <CDC_Receive_FS+0x50>)
- 8004394:	4d13      	ldr	r5, [pc, #76]	; (80043e4 <CDC_Receive_FS+0x54>)
- 8004396:	1b03      	subs	r3, r0, r4
- 8004398:	6809      	ldr	r1, [r1, #0]
- 800439a:	f5b3 6ff8 	cmp.w	r3, #1984	; 0x7c0
- 800439e:	782b      	ldrb	r3, [r5, #0]
- 80043a0:	bfb8      	it	lt
- 80043a2:	1844      	addlt	r4, r0, r1
- 80043a4:	b95b      	cbnz	r3, 80043be <CDC_Receive_FS+0x2e>
- 80043a6:	f7ff ffa9 	bl	80042fc <find_head>
- 80043aa:	b9a0      	cbnz	r0, 80043d6 <CDC_Receive_FS+0x46>
- 80043ac:	4621      	mov	r1, r4
- 80043ae:	480e      	ldr	r0, [pc, #56]	; (80043e8 <CDC_Receive_FS+0x58>)
- 80043b0:	f7ff faaf 	bl	8003912 <USBD_CDC_SetRxBuffer>
- 80043b4:	480c      	ldr	r0, [pc, #48]	; (80043e8 <CDC_Receive_FS+0x58>)
- 80043b6:	f7ff fad3 	bl	8003960 <USBD_CDC_ReceivePacket>
- 80043ba:	2000      	movs	r0, #0
- 80043bc:	bd38      	pop	{r3, r4, r5, pc}
- 80043be:	f7ff ffc5 	bl	800434c <find_tail>
- 80043c2:	4601      	mov	r1, r0
- 80043c4:	2800      	cmp	r0, #0
- 80043c6:	d0f1      	beq.n	80043ac <CDC_Receive_FS+0x1c>
- 80043c8:	4808      	ldr	r0, [pc, #32]	; (80043ec <CDC_Receive_FS+0x5c>)
- 80043ca:	f7ff ff7f 	bl	80042cc <usb_debug>
- 80043ce:	2300      	movs	r3, #0
- 80043d0:	4c03      	ldr	r4, [pc, #12]	; (80043e0 <CDC_Receive_FS+0x50>)
- 80043d2:	702b      	strb	r3, [r5, #0]
- 80043d4:	e7ea      	b.n	80043ac <CDC_Receive_FS+0x1c>
- 80043d6:	2301      	movs	r3, #1
- 80043d8:	4604      	mov	r4, r0
- 80043da:	702b      	strb	r3, [r5, #0]
- 80043dc:	e7e6      	b.n	80043ac <CDC_Receive_FS+0x1c>
- 80043de:	bf00      	nop
+ 8004394:	f241 3347 	movw	r3, #4935	; 0x1347
+ 8004398:	4d12      	ldr	r5, [pc, #72]	; (80043e4 <CDC_Receive_FS+0x54>)
+ 800439a:	1b02      	subs	r2, r0, r4
+ 800439c:	6809      	ldr	r1, [r1, #0]
+ 800439e:	429a      	cmp	r2, r3
+ 80043a0:	782b      	ldrb	r3, [r5, #0]
+ 80043a2:	bfd8      	it	le
+ 80043a4:	1844      	addle	r4, r0, r1
+ 80043a6:	b95b      	cbnz	r3, 80043c0 <CDC_Receive_FS+0x30>
+ 80043a8:	f7ff ffa8 	bl	80042fc <find_head>
+ 80043ac:	b9a0      	cbnz	r0, 80043d8 <CDC_Receive_FS+0x48>
+ 80043ae:	4621      	mov	r1, r4
+ 80043b0:	480d      	ldr	r0, [pc, #52]	; (80043e8 <CDC_Receive_FS+0x58>)
+ 80043b2:	f7ff faae 	bl	8003912 <USBD_CDC_SetRxBuffer>
+ 80043b6:	480c      	ldr	r0, [pc, #48]	; (80043e8 <CDC_Receive_FS+0x58>)
+ 80043b8:	f7ff fad2 	bl	8003960 <USBD_CDC_ReceivePacket>
+ 80043bc:	2000      	movs	r0, #0
+ 80043be:	bd38      	pop	{r3, r4, r5, pc}
+ 80043c0:	f7ff ffc4 	bl	800434c <find_tail>
+ 80043c4:	4601      	mov	r1, r0
+ 80043c6:	2800      	cmp	r0, #0
+ 80043c8:	d0f1      	beq.n	80043ae <CDC_Receive_FS+0x1e>
+ 80043ca:	4808      	ldr	r0, [pc, #32]	; (80043ec <CDC_Receive_FS+0x5c>)
+ 80043cc:	f7ff ff7e 	bl	80042cc <usb_debug>
+ 80043d0:	2300      	movs	r3, #0
+ 80043d2:	4c03      	ldr	r4, [pc, #12]	; (80043e0 <CDC_Receive_FS+0x50>)
+ 80043d4:	702b      	strb	r3, [r5, #0]
+ 80043d6:	e7ea      	b.n	80043ae <CDC_Receive_FS+0x1e>
+ 80043d8:	2301      	movs	r3, #1
+ 80043da:	4604      	mov	r4, r0
+ 80043dc:	702b      	strb	r3, [r5, #0]
+ 80043de:	e7e6      	b.n	80043ae <CDC_Receive_FS+0x1e>
  80043e0:	24000464 	.word	0x24000464
- 80043e4:	24001464 	.word	0x24001464
+ 80043e4:	24001fec 	.word	0x24001fec
  80043e8:	24000188 	.word	0x24000188
  80043ec:	08005124 	.word	0x08005124
 
@@ -6710,7 +6710,7 @@ Disassembly of section .text:
  800447e:	4620      	mov	r0, r4
  8004480:	bd10      	pop	{r4, pc}
  8004482:	bf00      	nop
- 8004484:	24001468 	.word	0x24001468
+ 8004484:	24001ff0 	.word	0x24001ff0
  8004488:	08005127 	.word	0x08005127
 
 0800448c <USBD_FS_ProductStrDescriptor>:
@@ -6723,7 +6723,7 @@ Disassembly of section .text:
  800449a:	4620      	mov	r0, r4
  800449c:	bd10      	pop	{r4, pc}
  800449e:	bf00      	nop
- 80044a0:	24001468 	.word	0x24001468
+ 80044a0:	24001ff0 	.word	0x24001ff0
  80044a4:	0800513a 	.word	0x0800513a
 
 080044a8 <USBD_FS_ConfigStrDescriptor>:
@@ -6736,7 +6736,7 @@ Disassembly of section .text:
  80044b6:	4620      	mov	r0, r4
  80044b8:	bd10      	pop	{r4, pc}
  80044ba:	bf00      	nop
- 80044bc:	24001468 	.word	0x24001468
+ 80044bc:	24001ff0 	.word	0x24001ff0
  80044c0:	08005150 	.word	0x08005150
 
 080044c4 <USBD_FS_InterfaceStrDescriptor>:
@@ -6749,7 +6749,7 @@ Disassembly of section .text:
  80044d2:	4620      	mov	r0, r4
  80044d4:	bd10      	pop	{r4, pc}
  80044d6:	bf00      	nop
- 80044d8:	24001468 	.word	0x24001468
+ 80044d8:	24001ff0 	.word	0x24001ff0
  80044dc:	0800515b 	.word	0x0800515b
 
 080044e0 <HAL_PCD_MspInit>:
@@ -6926,7 +6926,7 @@ Disassembly of section .text:
  8004694:	f7fc ff44 	bl	8001520 <HAL_PCDEx_SetTxFiFo>
  8004698:	2000      	movs	r0, #0
  800469a:	bd08      	pop	{r3, pc}
- 800469c:	24001668 	.word	0x24001668
+ 800469c:	240021f0 	.word	0x240021f0
  80046a0:	40080000 	.word	0x40080000
 
 080046a4 <USBD_LL_IsStallEP>:
@@ -6950,7 +6950,7 @@ Disassembly of section .text:
 080046d4 <USBD_static_malloc>:
  80046d4:	4800      	ldr	r0, [pc, #0]	; (80046d8 <USBD_static_malloc+0x4>)
  80046d6:	4770      	bx	lr
- 80046d8:	24001b74 	.word	0x24001b74
+ 80046d8:	240026fc 	.word	0x240026fc
 
 080046dc <USBD_static_free>:
  80046dc:	4770      	bx	lr
@@ -7852,7 +7852,7 @@ Disassembly of section .text:
  8004f1e:	e7ca      	b.n	8004eb6 <_free_r+0x26>
  8004f20:	b003      	add	sp, #12
  8004f22:	bd30      	pop	{r4, r5, pc}
- 8004f24:	24001d94 	.word	0x24001d94
+ 8004f24:	2400291c 	.word	0x2400291c
 
 08004f28 <sbrk_aligned>:
  8004f28:	b570      	push	{r4, r5, r6, lr}
@@ -7880,7 +7880,7 @@ Disassembly of section .text:
  8004f5c:	f04f 34ff 	mov.w	r4, #4294967295
  8004f60:	4620      	mov	r0, r4
  8004f62:	bd70      	pop	{r4, r5, r6, pc}
- 8004f64:	24001d98 	.word	0x24001d98
+ 8004f64:	24002920 	.word	0x24002920
 
 08004f68 <_malloc_r>:
  8004f68:	e92d 41f0 	stmdb	sp!, {r4, r5, r6, r7, r8, lr}
@@ -7984,7 +7984,7 @@ Disassembly of section .text:
  8005046:	6025      	str	r5, [r4, #0]
  8005048:	e7de      	b.n	8005008 <_malloc_r+0xa0>
  800504a:	bf00      	nop
- 800504c:	24001d94 	.word	0x24001d94
+ 800504c:	2400291c 	.word	0x2400291c
 
 08005050 <_realloc_r>:
  8005050:	e92d 41f0 	stmdb	sp!, {r4, r5, r6, r7, r8, lr}
@@ -8040,19 +8040,19 @@ Disassembly of section .text:
  80050c6:	b103      	cbz	r3, 80050ca <_sbrk_r+0x1a>
  80050c8:	6023      	str	r3, [r4, #0]
  80050ca:	bd38      	pop	{r3, r4, r5, pc}
- 80050cc:	24001d9c 	.word	0x24001d9c
+ 80050cc:	24002924 	.word	0x24002924
 
 080050d0 <__malloc_lock>:
  80050d0:	4801      	ldr	r0, [pc, #4]	; (80050d8 <__malloc_lock+0x8>)
  80050d2:	f000 b811 	b.w	80050f8 <__retarget_lock_acquire_recursive>
  80050d6:	bf00      	nop
- 80050d8:	24001da0 	.word	0x24001da0
+ 80050d8:	24002928 	.word	0x24002928
 
 080050dc <__malloc_unlock>:
  80050dc:	4801      	ldr	r0, [pc, #4]	; (80050e4 <__malloc_unlock+0x8>)
  80050de:	f000 b80c 	b.w	80050fa <__retarget_lock_release_recursive>
  80050e2:	bf00      	nop
- 80050e4:	24001da0 	.word	0x24001da0
+ 80050e4:	24002928 	.word	0x24002928
 
 080050e8 <_malloc_usable_size_r>:
  80050e8:	f851 3c04 	ldr.w	r3, [r1, #-4]

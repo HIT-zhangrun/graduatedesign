@@ -1,22 +1,10 @@
-00:23:17 **** Incremental Build of configuration Release for project fft_process ****
+00:54:32 **** Incremental Build of configuration Debug for project fft_process ****
 make -j8 all 
-arm-none-eabi-gcc -o "fft_process.elf" @"objects.list"   -mcpu=cortex-m7 -T"C:\Users\zhangrun\OneDrive\my_doc\project\graduate_design\graduatedesign\code\stm32\fft_process\STM32H750VBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="fft_process.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-гд???????????гд??????????? fft_process.elf
- 
 arm-none-eabi-size   fft_process.elf 
-arm-none-eabi-objdump -h -S  fft_process.elf  > "fft_process.list"
    text	   data	    bss	    dec	    hex	filename
-  20888	    360	  12360	  33608	   8348	fft_process.elf
-arm-none-eabi-objcopy  -O ihex  fft_process.elf  "fft_process.hex"
-arm-none-eabi-objcopy  -O binary  fft_process.elf  "fft_process.bin"
+  38168	    364	  15308	  53840	   d250	fft_process.elf
 гд???????????гд????? default.size.stdout
  
-гд???????????гд????? fft_process.hex
-гд???????????гд????? fft_process.bin
- 
-гд???????????гд????? fft_process.list
- 
- 
 
-00:23:18 Build Finished. 0 errors, 0 warnings. (took 1s.69ms)
+00:54:33 Build Finished. 0 errors, 0 warnings. (took 845ms)
 

@@ -1,19 +1,57 @@
-00:23:17 **** Incremental Build of configuration Release for project fft_process ****
+00:38:40 **** Incremental Build of configuration Debug for project fft_process ****
 make -j8 all 
+arm-none-eabi-gcc "../USB_DEVICE/App/usb_device.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -I../USB_DEVICE/App -I../USB_DEVICE/Target -I../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"USB_DEVICE/App/usb_device.d" -MT"USB_DEVICE/App/usb_device.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "USB_DEVICE/App/usb_device.o"
+arm-none-eabi-gcc "../USB_DEVICE/App/usbd_cdc_if.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -I../USB_DEVICE/App -I../USB_DEVICE/Target -I../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"USB_DEVICE/App/usbd_cdc_if.d" -MT"USB_DEVICE/App/usbd_cdc_if.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "USB_DEVICE/App/usbd_cdc_if.o"
+arm-none-eabi-gcc "../Core/Src/stm32h7xx_it.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H750xx -c -I../Core/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc -I../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I../Drivers/CMSIS/Include -I../USB_DEVICE/App -I../USB_DEVICE/Target -I../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/stm32h7xx_it.d" -MT"Core/Src/stm32h7xx_it.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32h7xx_it.o"
 arm-none-eabi-gcc -o "fft_process.elf" @"objects.list"   -mcpu=cortex-m7 -T"C:\Users\zhangrun\OneDrive\my_doc\project\graduate_design\graduatedesign\code\stm32\fft_process\STM32H750VBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="fft_process.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 гд???????????гд??????????? fft_process.elf
  
 arm-none-eabi-size   fft_process.elf 
 arm-none-eabi-objdump -h -S  fft_process.elf  > "fft_process.list"
-   text	   data	    bss	    dec	    hex	filename
-  20888	    360	  12360	  33608	   8348	fft_process.elf
 arm-none-eabi-objcopy  -O ihex  fft_process.elf  "fft_process.hex"
+   text	   data	    bss	    dec	    hex	filename
+  38168	    364	  15308	  53840	   d250	fft_process.elf
 arm-none-eabi-objcopy  -O binary  fft_process.elf  "fft_process.bin"
 гд???????????гд????? default.size.stdout
  
 гд???????????гд????? fft_process.hex
 гд???????????гд????? fft_process.bin
  
+ 
 гд???????????гд????? fft_process.list
  
+00:42:45 **** Incremental Build of configuration Debug for project fft_process ****
+make -j8 all 
+arm-none-eabi-size   fft_process.elf 
+   text	   data	    bss	    dec	    hex	filename
+  38168	    364	  15308	  53840	   d250	fft_process.elf
+гд???????????гд????? default.size.stdout
+ 
+00:47:44 **** Incremental Build of configuration Debug for project fft_process ****
+make -j8 all 
+arm-none-eabi-size   fft_process.elf 
+   text	   data	    bss	    dec	    hex	filename
+  38168	    364	  15308	  53840	   d250	fft_process.elf
+гд???????????гд????? default.size.stdout
+ 
+00:48:41 **** Incremental Build of configuration Debug for project fft_process ****
+make -j8 all 
+arm-none-eabi-size   fft_process.elf 
+   text	   data	    bss	    dec	    hex	filename
+  38168	    364	  15308	  53840	   d250	fft_process.elf
+гд???????????гд????? default.size.stdout
+ 
+00:50:33 **** Incremental Build of configuration Debug for project fft_process ****
+make -j8 all 
+arm-none-eabi-size   fft_process.elf 
+   text	   data	    bss	    dec	    hex	filename
+  38168	    364	  15308	  53840	   d250	fft_process.elf
+гд???????????гд????? default.size.stdout
+ 
+00:54:32 **** Incremental Build of configuration Debug for project fft_process ****
+make -j8 all 
+arm-none-eabi-size   fft_process.elf 
+   text	   data	    bss	    dec	    hex	filename
+  38168	    364	  15308	  53840	   d250	fft_process.elf
+гд???????????гд????? default.size.stdout
  

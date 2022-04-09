@@ -56,6 +56,12 @@ default.size.stdout \
 OBJDUMP_LIST += \
 fft_process.list \
 
+OBJCOPY_HEX += \
+fft_process.hex \
+
+OBJCOPY_BIN += \
+fft_process.bin \
+
 
 # 所有目标
 all: main-build
@@ -79,12 +85,22 @@ fft_process.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo '已结束构建： $@'
 	@echo ' '
 
+fft_process.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "fft_process.hex"
+	@echo '已结束构建： $@'
+	@echo ' '
+
+fft_process.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "fft_process.bin"
+	@echo '已结束构建： $@'
+	@echo ' '
+
 # 其他目标
 clean:
-	-$(RM) default.size.stdout fft_process.elf fft_process.list fft_process.map
+	-$(RM) default.size.stdout fft_process.bin fft_process.elf fft_process.hex fft_process.list fft_process.map
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX) $(OBJCOPY_BIN)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'

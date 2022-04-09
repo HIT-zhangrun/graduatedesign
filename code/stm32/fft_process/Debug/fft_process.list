@@ -15,29 +15,29 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, DATA
   5 .data         00000164  24000000  08009528  00020000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .bss          00001c44  24000164  0800968c  00020164  2**2
+  6 .bss          000027cc  24000164  0800968c  00020164  2**2
                   ALLOC
-  7 ._user_heap_stack 00001400  24001da8  0800968c  00021da8  2**0
+  7 ._user_heap_stack 00001400  24002930  0800968c  00022930  2**0
                   ALLOC
   8 .ARM.attributes 0000002e  00000000  00000000  00020164  2**0
                   CONTENTS, READONLY
-  9 .debug_info   00014104  00000000  00000000  00020192  2**0
+  9 .debug_info   00014115  00000000  00000000  00020192  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 10 .debug_abbrev 0000322b  00000000  00000000  00034296  2**0
+ 10 .debug_abbrev 0000322b  00000000  00000000  000342a7  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 11 .debug_aranges 00000eb8  00000000  00000000  000374c8  2**3
+ 11 .debug_aranges 00000eb8  00000000  00000000  000374d8  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 12 .debug_ranges 00000d40  00000000  00000000  00038380  2**3
+ 12 .debug_ranges 00000d40  00000000  00000000  00038390  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_macro  00038e65  00000000  00000000  000390c0  2**0
+ 13 .debug_macro  00038e65  00000000  00000000  000390d0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_line   00014554  00000000  00000000  00071f25  2**0
+ 14 .debug_line   00014554  00000000  00000000  00071f35  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_str    0015578e  00000000  00000000  00086479  2**0
+ 15 .debug_str    0015578e  00000000  00000000  00086489  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .comment      00000050  00000000  00000000  001dbc07  2**0
+ 16 .comment      00000050  00000000  00000000  001dbc17  2**0
                   CONTENTS, READONLY
- 17 .debug_frame  00003e54  00000000  00000000  001dbc58  2**2
+ 17 .debug_frame  00003e54  00000000  00000000  001dbc68  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -716,7 +716,7 @@ void OTG_FS_IRQHandler(void)
  8000612:	bf00      	nop
  8000614:	bd80      	pop	{r7, pc}
  8000616:	bf00      	nop
- 8000618:	2400166c 	.word	0x2400166c
+ 8000618:	240021f4 	.word	0x240021f4
 
 0800061c <HAL_GPIO_EXTI_Callback>:
 
@@ -826,7 +826,7 @@ void *_sbrk(ptrdiff_t incr)
  80006a0:	24080000 	.word	0x24080000
  80006a4:	00000400 	.word	0x00000400
  80006a8:	24000180 	.word	0x24000180
- 80006ac:	24001da8 	.word	0x24001da8
+ 80006ac:	24002930 	.word	0x24002930
 
 080006b0 <SystemInit>:
   *         configuration.
@@ -1128,7 +1128,7 @@ LoopFillZerobss:
   ldr r2, =_sbss
  8000808:	24000164 	.word	0x24000164
   ldr r4, =_ebss
- 800080c:	24001da8 	.word	0x24001da8
+ 800080c:	24002930 	.word	0x24002930
 
 08000810 <ADC3_IRQHandler>:
  * @retval None
@@ -21402,7 +21402,7 @@ static int8_t CDC_Init_FS(void)
 }
  8007efc:	4618      	mov	r0, r3
  8007efe:	bd80      	pop	{r7, pc}
- 8007f00:	24000c68 	.word	0x24000c68
+ 8007f00:	240017f0 	.word	0x240017f0
  8007f04:	2400018c 	.word	0x2400018c
  8007f08:	24000468 	.word	0x24000468
 
@@ -21532,92 +21532,92 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
  8007ff4:	687b      	ldr	r3, [r7, #4]
  8007ff6:	4a1e      	ldr	r2, [pc, #120]	; (8008070 <CDC_Receive_FS+0x98>)
  8007ff8:	1a9b      	subs	r3, r3, r2
- 8007ffa:	f5b3 6ff8 	cmp.w	r3, #1984	; 0x7c0
- 8007ffe:	db01      	blt.n	8008004 <CDC_Receive_FS+0x2c>
+ 8007ffa:	f241 3247 	movw	r2, #4935	; 0x1347
+ 8007ffe:	4293      	cmp	r3, r2
+ 8008000:	dd01      	ble.n	8008006 <CDC_Receive_FS+0x2e>
     {
         buf_p = &UserRxBufferFS[0];
- 8008000:	4b1b      	ldr	r3, [pc, #108]	; (8008070 <CDC_Receive_FS+0x98>)
- 8008002:	617b      	str	r3, [r7, #20]
+ 8008002:	4b1b      	ldr	r3, [pc, #108]	; (8008070 <CDC_Receive_FS+0x98>)
+ 8008004:	617b      	str	r3, [r7, #20]
     }
 
     if(!rx_status)
- 8008004:	4b1b      	ldr	r3, [pc, #108]	; (8008074 <CDC_Receive_FS+0x9c>)
- 8008006:	781b      	ldrb	r3, [r3, #0]
- 8008008:	2b00      	cmp	r3, #0
- 800800a:	d107      	bne.n	800801c <CDC_Receive_FS+0x44>
+ 8008006:	4b1b      	ldr	r3, [pc, #108]	; (8008074 <CDC_Receive_FS+0x9c>)
+ 8008008:	781b      	ldrb	r3, [r3, #0]
+ 800800a:	2b00      	cmp	r3, #0
+ 800800c:	d107      	bne.n	800801e <CDC_Receive_FS+0x46>
     {
         ptr = find_head(Buf, *Len);
- 800800c:	683b      	ldr	r3, [r7, #0]
- 800800e:	681b      	ldr	r3, [r3, #0]
- 8008010:	4619      	mov	r1, r3
- 8008012:	6878      	ldr	r0, [r7, #4]
- 8008014:	f000 f88c 	bl	8008130 <find_head>
- 8008018:	6138      	str	r0, [r7, #16]
- 800801a:	e006      	b.n	800802a <CDC_Receive_FS+0x52>
+ 800800e:	683b      	ldr	r3, [r7, #0]
+ 8008010:	681b      	ldr	r3, [r3, #0]
+ 8008012:	4619      	mov	r1, r3
+ 8008014:	6878      	ldr	r0, [r7, #4]
+ 8008016:	f000 f88b 	bl	8008130 <find_head>
+ 800801a:	6138      	str	r0, [r7, #16]
+ 800801c:	e006      	b.n	800802c <CDC_Receive_FS+0x54>
     }
     else
     {
         buf_len = find_tail(Buf, *Len);
- 800801c:	683b      	ldr	r3, [r7, #0]
- 800801e:	681b      	ldr	r3, [r3, #0]
- 8008020:	4619      	mov	r1, r3
- 8008022:	6878      	ldr	r0, [r7, #4]
- 8008024:	f000 f8da 	bl	80081dc <find_tail>
- 8008028:	60f8      	str	r0, [r7, #12]
+ 800801e:	683b      	ldr	r3, [r7, #0]
+ 8008020:	681b      	ldr	r3, [r3, #0]
+ 8008022:	4619      	mov	r1, r3
+ 8008024:	6878      	ldr	r0, [r7, #4]
+ 8008026:	f000 f8d9 	bl	80081dc <find_tail>
+ 800802a:	60f8      	str	r0, [r7, #12]
     }
 
     if (ptr != NULL)
- 800802a:	693b      	ldr	r3, [r7, #16]
- 800802c:	2b00      	cmp	r3, #0
- 800802e:	d004      	beq.n	800803a <CDC_Receive_FS+0x62>
+ 800802c:	693b      	ldr	r3, [r7, #16]
+ 800802e:	2b00      	cmp	r3, #0
+ 8008030:	d004      	beq.n	800803c <CDC_Receive_FS+0x64>
     {
         buf_p = ptr;
- 8008030:	693b      	ldr	r3, [r7, #16]
- 8008032:	617b      	str	r3, [r7, #20]
+ 8008032:	693b      	ldr	r3, [r7, #16]
+ 8008034:	617b      	str	r3, [r7, #20]
         rx_status = 1;
- 8008034:	4b0f      	ldr	r3, [pc, #60]	; (8008074 <CDC_Receive_FS+0x9c>)
- 8008036:	2201      	movs	r2, #1
- 8008038:	701a      	strb	r2, [r3, #0]
+ 8008036:	4b0f      	ldr	r3, [pc, #60]	; (8008074 <CDC_Receive_FS+0x9c>)
+ 8008038:	2201      	movs	r2, #1
+ 800803a:	701a      	strb	r2, [r3, #0]
     }
     if(buf_len != 0)
- 800803a:	68fb      	ldr	r3, [r7, #12]
- 800803c:	2b00      	cmp	r3, #0
- 800803e:	d00a      	beq.n	8008056 <CDC_Receive_FS+0x7e>
+ 800803c:	68fb      	ldr	r3, [r7, #12]
+ 800803e:	2b00      	cmp	r3, #0
+ 8008040:	d00a      	beq.n	8008058 <CDC_Receive_FS+0x80>
     {
         usb_debug("%d", buf_len);
- 8008040:	68f9      	ldr	r1, [r7, #12]
- 8008042:	480d      	ldr	r0, [pc, #52]	; (8008078 <CDC_Receive_FS+0xa0>)
- 8008044:	f000 f854 	bl	80080f0 <usb_debug>
+ 8008042:	68f9      	ldr	r1, [r7, #12]
+ 8008044:	480c      	ldr	r0, [pc, #48]	; (8008078 <CDC_Receive_FS+0xa0>)
+ 8008046:	f000 f853 	bl	80080f0 <usb_debug>
         buf_len = 0;
- 8008048:	2300      	movs	r3, #0
- 800804a:	60fb      	str	r3, [r7, #12]
+ 800804a:	2300      	movs	r3, #0
+ 800804c:	60fb      	str	r3, [r7, #12]
         buf_p = &UserRxBufferFS[0];
- 800804c:	4b08      	ldr	r3, [pc, #32]	; (8008070 <CDC_Receive_FS+0x98>)
- 800804e:	617b      	str	r3, [r7, #20]
+ 800804e:	4b08      	ldr	r3, [pc, #32]	; (8008070 <CDC_Receive_FS+0x98>)
+ 8008050:	617b      	str	r3, [r7, #20]
         rx_status = 0;
- 8008050:	4b08      	ldr	r3, [pc, #32]	; (8008074 <CDC_Receive_FS+0x9c>)
- 8008052:	2200      	movs	r2, #0
- 8008054:	701a      	strb	r2, [r3, #0]
+ 8008052:	4b08      	ldr	r3, [pc, #32]	; (8008074 <CDC_Receive_FS+0x9c>)
+ 8008054:	2200      	movs	r2, #0
+ 8008056:	701a      	strb	r2, [r3, #0]
     }
     USBD_CDC_SetRxBuffer(&hUsbDeviceFS, buf_p);
- 8008056:	6979      	ldr	r1, [r7, #20]
- 8008058:	4808      	ldr	r0, [pc, #32]	; (800807c <CDC_Receive_FS+0xa4>)
- 800805a:	f7fe fb85 	bl	8006768 <USBD_CDC_SetRxBuffer>
+ 8008058:	6979      	ldr	r1, [r7, #20]
+ 800805a:	4808      	ldr	r0, [pc, #32]	; (800807c <CDC_Receive_FS+0xa4>)
+ 800805c:	f7fe fb84 	bl	8006768 <USBD_CDC_SetRxBuffer>
     USBD_CDC_ReceivePacket(&hUsbDeviceFS);
- 800805e:	4807      	ldr	r0, [pc, #28]	; (800807c <CDC_Receive_FS+0xa4>)
- 8008060:	f7fe fbe6 	bl	8006830 <USBD_CDC_ReceivePacket>
+ 8008060:	4806      	ldr	r0, [pc, #24]	; (800807c <CDC_Receive_FS+0xa4>)
+ 8008062:	f7fe fbe5 	bl	8006830 <USBD_CDC_ReceivePacket>
 
     return (USBD_OK);
- 8008064:	2300      	movs	r3, #0
+ 8008066:	2300      	movs	r3, #0
   /* USER CODE END 6 */
 }
- 8008066:	4618      	mov	r0, r3
- 8008068:	3718      	adds	r7, #24
- 800806a:	46bd      	mov	sp, r7
- 800806c:	bd80      	pop	{r7, pc}
- 800806e:	bf00      	nop
+ 8008068:	4618      	mov	r0, r3
+ 800806a:	3718      	adds	r7, #24
+ 800806c:	46bd      	mov	sp, r7
+ 800806e:	bd80      	pop	{r7, pc}
  8008070:	24000468 	.word	0x24000468
- 8008074:	24001468 	.word	0x24001468
+ 8008074:	24001ff0 	.word	0x24001ff0
  8008078:	08009490 	.word	0x08009490
  800807c:	2400018c 	.word	0x2400018c
 
@@ -21744,7 +21744,7 @@ uint8_t usb_debug(const char *format, ...)
  8008124:	e8bd 4080 	ldmia.w	sp!, {r7, lr}
  8008128:	b004      	add	sp, #16
  800812a:	4770      	bx	lr
- 800812c:	24000c68 	.word	0x24000c68
+ 800812c:	240017f0 	.word	0x240017f0
 
 08008130 <find_head>:
 
@@ -22077,7 +22077,7 @@ uint8_t * USBD_FS_ProductStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length
  80082ee:	46bd      	mov	sp, r7
  80082f0:	bd80      	pop	{r7, pc}
  80082f2:	bf00      	nop
- 80082f4:	2400146c 	.word	0x2400146c
+ 80082f4:	24001ff4 	.word	0x24001ff4
  80082f8:	08009494 	.word	0x08009494
 
 080082fc <USBD_FS_ManufacturerStrDescriptor>:
@@ -22106,7 +22106,7 @@ uint8_t * USBD_FS_ManufacturerStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *l
  8008316:	3708      	adds	r7, #8
  8008318:	46bd      	mov	sp, r7
  800831a:	bd80      	pop	{r7, pc}
- 800831c:	2400146c 	.word	0x2400146c
+ 800831c:	24001ff4 	.word	0x24001ff4
  8008320:	080094ac 	.word	0x080094ac
 
 08008324 <USBD_FS_SerialStrDescriptor>:
@@ -22185,7 +22185,7 @@ uint8_t * USBD_FS_ConfigStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
  8008376:	46bd      	mov	sp, r7
  8008378:	bd80      	pop	{r7, pc}
  800837a:	bf00      	nop
- 800837c:	2400146c 	.word	0x2400146c
+ 800837c:	24001ff4 	.word	0x24001ff4
  8008380:	080094c0 	.word	0x080094c0
 
 08008384 <USBD_FS_InterfaceStrDescriptor>:
@@ -22229,7 +22229,7 @@ uint8_t * USBD_FS_InterfaceStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *leng
  80083b2:	46bd      	mov	sp, r7
  80083b4:	bd80      	pop	{r7, pc}
  80083b6:	bf00      	nop
- 80083b8:	2400146c 	.word	0x2400146c
+ 80083b8:	24001ff4 	.word	0x24001ff4
  80083bc:	080094cc 	.word	0x080094cc
 
 080083c0 <Get_SerialNum>:
@@ -22971,7 +22971,7 @@ USBD_StatusTypeDef USBD_LL_Init(USBD_HandleTypeDef *pdev)
  80087f2:	3708      	adds	r7, #8
  80087f4:	46bd      	mov	sp, r7
  80087f6:	bd80      	pop	{r7, pc}
- 80087f8:	2400166c 	.word	0x2400166c
+ 80087f8:	240021f4 	.word	0x240021f4
  80087fc:	40080000 	.word	0x40080000
 
 08008800 <USBD_LL_Start>:
@@ -23446,7 +23446,7 @@ void *USBD_static_malloc(uint32_t size)
  8008a8c:	f85d 7b04 	ldr.w	r7, [sp], #4
  8008a90:	4770      	bx	lr
  8008a92:	bf00      	nop
- 8008a94:	24001b78 	.word	0x24001b78
+ 8008a94:	24002700 	.word	0x24002700
 
 08008a98 <USBD_static_free>:
   * @brief  Dummy memory free
@@ -24362,7 +24362,7 @@ USBD_StatusTypeDef USBD_Get_USB_Status(HAL_StatusTypeDef hal_status)
  800929a:	e7ca      	b.n	8009232 <_free_r+0x26>
  800929c:	b003      	add	sp, #12
  800929e:	bd30      	pop	{r4, r5, pc}
- 80092a0:	24001d98 	.word	0x24001d98
+ 80092a0:	24002920 	.word	0x24002920
 
 080092a4 <sbrk_aligned>:
  80092a4:	b570      	push	{r4, r5, r6, lr}
@@ -24390,7 +24390,7 @@ USBD_StatusTypeDef USBD_Get_USB_Status(HAL_StatusTypeDef hal_status)
  80092d8:	f04f 34ff 	mov.w	r4, #4294967295
  80092dc:	4620      	mov	r0, r4
  80092de:	bd70      	pop	{r4, r5, r6, pc}
- 80092e0:	24001d9c 	.word	0x24001d9c
+ 80092e0:	24002924 	.word	0x24002924
 
 080092e4 <_malloc_r>:
  80092e4:	e92d 41f0 	stmdb	sp!, {r4, r5, r6, r7, r8, lr}
@@ -24494,7 +24494,7 @@ USBD_StatusTypeDef USBD_Get_USB_Status(HAL_StatusTypeDef hal_status)
  80093c2:	6025      	str	r5, [r4, #0]
  80093c4:	e7de      	b.n	8009384 <_malloc_r+0xa0>
  80093c6:	bf00      	nop
- 80093c8:	24001d98 	.word	0x24001d98
+ 80093c8:	24002920 	.word	0x24002920
 
 080093cc <_realloc_r>:
  80093cc:	e92d 41f0 	stmdb	sp!, {r4, r5, r6, r7, r8, lr}
@@ -24550,19 +24550,19 @@ USBD_StatusTypeDef USBD_Get_USB_Status(HAL_StatusTypeDef hal_status)
  8009442:	b103      	cbz	r3, 8009446 <_sbrk_r+0x1a>
  8009444:	6023      	str	r3, [r4, #0]
  8009446:	bd38      	pop	{r3, r4, r5, pc}
- 8009448:	24001da0 	.word	0x24001da0
+ 8009448:	24002928 	.word	0x24002928
 
 0800944c <__malloc_lock>:
  800944c:	4801      	ldr	r0, [pc, #4]	; (8009454 <__malloc_lock+0x8>)
  800944e:	f000 b811 	b.w	8009474 <__retarget_lock_acquire_recursive>
  8009452:	bf00      	nop
- 8009454:	24001da4 	.word	0x24001da4
+ 8009454:	2400292c 	.word	0x2400292c
 
 08009458 <__malloc_unlock>:
  8009458:	4801      	ldr	r0, [pc, #4]	; (8009460 <__malloc_unlock+0x8>)
  800945a:	f000 b80c 	b.w	8009476 <__retarget_lock_release_recursive>
  800945e:	bf00      	nop
- 8009460:	24001da4 	.word	0x24001da4
+ 8009460:	2400292c 	.word	0x2400292c
 
 08009464 <_malloc_usable_size_r>:
  8009464:	f851 3c04 	ldr.w	r3, [r1, #-4]
