@@ -65,8 +65,6 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
-  char buf[] = "test\r\n";
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -75,8 +73,6 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  int32_t i = 0;
-
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -91,15 +87,20 @@ int main(void)
   MX_USB_DEVICE_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_GPIO_WritePin(GPIOC, green_Pin, GPIO_PIN_RESET);
+  for(uint32_t num = 0; num < APP_RX_DATA_SIZE; num++)
+  {
+  	UserRxBufferFS[num] = '-';
+  }
+  HAL_GPIO_WritePin(GPIOC, green_Pin, GPIO_PIN_SET);
+  //HAL_GPIO_WritePin(GPIOC, red_Pin|green_Pin|blue_Pin, GPIO_PIN_RESET);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-  //HAL_UART_Transmit(&huart2,buf,6,100);//串口1发送接收buff里的东西
-	//usb_debug("test %d\r\n", i++);
+	  HAL_GPIO_WritePin(GPIOC, red_Pin, GPIO_PIN_RESET);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -174,7 +175,14 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	if(GPIO_Pin == button_Pin)
+	{
+		CDC_Transmit_FS((uint8_t *)UserRxBufferFS, 100);
+		usb_debug("\r\n");
+	}
+}
 /* USER CODE END 4 */
 
 /**

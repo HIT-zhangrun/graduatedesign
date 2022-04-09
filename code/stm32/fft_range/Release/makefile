@@ -11,9 +11,12 @@ RM := rm -rf
 -include sources.mk
 -include USB_DEVICE/Target/subdir.mk
 -include USB_DEVICE/App/subdir.mk
+-include Middlewares/USB_Device_Library/subdir.mk
 -include Middlewares/ST/STM32_USB_Device_Library/Core/Src/subdir.mk
 -include Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/subdir.mk
 -include Drivers/STM32H7xx_HAL_Driver/Src/subdir.mk
+-include Drivers/STM32H7xx_HAL_Driver/subdir.mk
+-include Drivers/CMSIS/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
 -include objects.mk
@@ -70,8 +73,8 @@ all: main-build
 main-build: fft_range.elf secondary-outputs
 
 # 工具调用
-fft_range.elf fft_range.map: $(OBJS) $(USER_OBJS) C:\Users\MYDOC\EE_project\graduate_design\graduatedesign\code\stm32\fft_range\STM32H750VBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "fft_range.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\MYDOC\EE_project\graduate_design\graduatedesign\code\stm32\fft_range\STM32H750VBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="fft_range.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+fft_range.elf fft_range.map: $(OBJS) $(USER_OBJS) C:\Users\zhangrun\OneDrive\my_doc\project\graduate_design\graduatedesign\code\stm32\fft_range\STM32H750VBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "fft_range.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\zhangrun\OneDrive\my_doc\project\graduate_design\graduatedesign\code\stm32\fft_range\STM32H750VBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="fft_range.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo '已结束构建目标： $@'
 	@echo ' '
 

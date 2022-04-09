@@ -1,21 +1,21 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file           : usbd_cdc_if.c
-  * @version        : v1.0_Cube
-  * @brief          : Usb device for Virtual Com Port.
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2022 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file           : usbd_cdc_if.c
+ * @version        : v1.0_Cube
+ * @brief          : Usb device for Virtual Com Port.
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2022 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
@@ -153,10 +153,10 @@ USBD_CDC_ItfTypeDef USBD_Interface_fops_FS =
 static int8_t CDC_Init_FS(void)
 {
   /* USER CODE BEGIN 3 */
-  /* Set Application Buffers */
-  USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBufferFS, 0);
-  USBD_CDC_SetRxBuffer(&hUsbDeviceFS, UserRxBufferFS);
-  return (USBD_OK);
+    /* Set Application Buffers */
+    USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBufferFS, 0);
+    USBD_CDC_SetRxBuffer(&hUsbDeviceFS, UserRxBufferFS);
+    return (USBD_OK);
   /* USER CODE END 3 */
 }
 
@@ -167,7 +167,7 @@ static int8_t CDC_Init_FS(void)
 static int8_t CDC_DeInit_FS(void)
 {
   /* USER CODE BEGIN 4 */
-  return (USBD_OK);
+    return (USBD_OK);
   /* USER CODE END 4 */
 }
 
@@ -181,66 +181,66 @@ static int8_t CDC_DeInit_FS(void)
 static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 {
   /* USER CODE BEGIN 5 */
-  switch(cmd)
-  {
+    switch (cmd)
+    {
     case CDC_SEND_ENCAPSULATED_COMMAND:
 
-    break;
+        break;
 
     case CDC_GET_ENCAPSULATED_RESPONSE:
 
-    break;
+        break;
 
     case CDC_SET_COMM_FEATURE:
 
-    break;
+        break;
 
     case CDC_GET_COMM_FEATURE:
 
-    break;
+        break;
 
     case CDC_CLEAR_COMM_FEATURE:
 
-    break;
+        break;
 
-  /*******************************************************************************/
-  /* Line Coding Structure                                                       */
-  /*-----------------------------------------------------------------------------*/
-  /* Offset | Field       | Size | Value  | Description                          */
-  /* 0      | dwDTERate   |   4  | Number |Data terminal rate, in bits per second*/
-  /* 4      | bCharFormat |   1  | Number | Stop bits                            */
-  /*                                        0 - 1 Stop bit                       */
-  /*                                        1 - 1.5 Stop bits                    */
-  /*                                        2 - 2 Stop bits                      */
-  /* 5      | bParityType |  1   | Number | Parity                               */
-  /*                                        0 - None                             */
-  /*                                        1 - Odd                              */
-  /*                                        2 - Even                             */
-  /*                                        3 - Mark                             */
-  /*                                        4 - Space                            */
-  /* 6      | bDataBits  |   1   | Number Data bits (5, 6, 7, 8 or 16).          */
-  /*******************************************************************************/
+        /*******************************************************************************/
+        /* Line Coding Structure                                                       */
+        /*-----------------------------------------------------------------------------*/
+        /* Offset | Field       | Size | Value  | Description                          */
+        /* 0      | dwDTERate   |   4  | Number |Data terminal rate, in bits per second*/
+        /* 4      | bCharFormat |   1  | Number | Stop bits                            */
+        /*                                        0 - 1 Stop bit                       */
+        /*                                        1 - 1.5 Stop bits                    */
+        /*                                        2 - 2 Stop bits                      */
+        /* 5      | bParityType |  1   | Number | Parity                               */
+        /*                                        0 - None                             */
+        /*                                        1 - Odd                              */
+        /*                                        2 - Even                             */
+        /*                                        3 - Mark                             */
+        /*                                        4 - Space                            */
+        /* 6      | bDataBits  |   1   | Number Data bits (5, 6, 7, 8 or 16).          */
+        /*******************************************************************************/
     case CDC_SET_LINE_CODING:
 
-    break;
+        break;
 
     case CDC_GET_LINE_CODING:
 
-    break;
+        break;
 
     case CDC_SET_CONTROL_LINE_STATE:
 
-    break;
+        break;
 
     case CDC_SEND_BREAK:
 
-    break;
+        break;
 
-  default:
-    break;
-  }
+    default:
+        break;
+    }
 
-  return (USBD_OK);
+    return (USBD_OK);
   /* USER CODE END 5 */
 }
 
@@ -262,26 +262,40 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 {
   /* USER CODE BEGIN 6 */
-  //static uint32_t buff_len = 0;
-  //static char buf[] = "\r\n\r\n";
-  //buff_len += *Len;
+    static uint8_t rx_status = 0;
+    uint8_t *buf_p = (Buf + *Len);
+    uint8_t *ptr = NULL;
+    uint32_t buf_len = 0;
+    if ((Buf - UserRxBufferFS) >= (APP_RX_DATA_SIZE - USB_ONCE_RX_MAX_LEN))
+    {
+        buf_p = &UserRxBufferFS[0];
+    }
+    
+    if(!rx_status)
+    {
+        ptr = find_head(Buf, *Len);
+    }
+    else
+    {
+        buf_len = find_tail(Buf, *Len);
+    }
 
-  //if(buff_len > (APP_RX_DATA_SIZE - USB_ONCE_RX_MAX_LEN))
-  //{
-  //    CDC_Transmit_FS(UserRxBufferFS, buff_len + *Len);
-  //    CDC_Transmit_FS(buf, 4);
-  //    buff_len = 0;
-  //}
-
-  //USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[buff_len]);UserRxBufferFS
-	HAL_UART_Transmit(&huart2,"test\r\n",6,100);
-	usb_debug("test\r\n");
-	//usb_debug("%s\r\n", *Len);
-
-	USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
+    if (ptr != NULL)
+    {
+        buf_p = ptr;
+        rx_status = 1;
+    }
+    if(buf_len != 0)
+    {
+        usb_debug("%d", buf_len);
+        buf_len = 0;
+        buf_p = &UserRxBufferFS[0];
+        rx_status = 0;
+    }
+    USBD_CDC_SetRxBuffer(&hUsbDeviceFS, buf_p);
     USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 
-  return (USBD_OK);
+    return (USBD_OK);
   /* USER CODE END 6 */
 }
 
@@ -300,12 +314,13 @@ uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len)
 {
   uint8_t result = USBD_OK;
   /* USER CODE BEGIN 7 */
-  USBD_CDC_HandleTypeDef *hcdc = (USBD_CDC_HandleTypeDef*)hUsbDeviceFS.pClassData;
-  if (hcdc->TxState != 0){
-    return USBD_BUSY;
-  }
-  USBD_CDC_SetTxBuffer(&hUsbDeviceFS, Buf, Len);
-  result = USBD_CDC_TransmitPacket(&hUsbDeviceFS);
+    USBD_CDC_HandleTypeDef *hcdc = (USBD_CDC_HandleTypeDef *)hUsbDeviceFS.pClassData;
+    if (hcdc->TxState != 0)
+    {
+        return USBD_BUSY;
+    }
+    USBD_CDC_SetTxBuffer(&hUsbDeviceFS, Buf, Len);
+    result = USBD_CDC_TransmitPacket(&hUsbDeviceFS);
   /* USER CODE END 7 */
   return result;
 }
@@ -326,9 +341,9 @@ static int8_t CDC_TransmitCplt_FS(uint8_t *Buf, uint32_t *Len, uint8_t epnum)
 {
   uint8_t result = USBD_OK;
   /* USER CODE BEGIN 13 */
-  UNUSED(Buf);
-  UNUSED(Len);
-  UNUSED(epnum);
+    UNUSED(Buf);
+    UNUSED(Len);
+    UNUSED(epnum);
   /* USER CODE END 13 */
   return result;
 }
@@ -338,7 +353,6 @@ uint8_t usb_debug(const char *format, ...)
 {
     va_list args;
     uint32_t length;
-
     va_start(args, format);
     length = vsnprintf((char *)UserTxBufferFS, APP_TX_DATA_SIZE, (char *)format, args);
     va_end(args);
@@ -346,6 +360,83 @@ uint8_t usb_debug(const char *format, ...)
 
     return 0;
 }
+
+uint8_t *find_head(uint8_t *Buf, uint32_t len)
+{
+    uint8_t status = 0;
+    uint8_t now_buf;
+    int8_t num = 0;
+    uint8_t *head_ptr = NULL;
+    uint8_t *next_ptr = NULL;
+    if (Buf > UserRxBufferFS)
+    {
+        if (*(Buf - 1) == head_1)
+        {
+            status = 1;
+        }
+    }
+    for (; num < len; num++)
+    {
+        now_buf = *(Buf + num);
+        if (status == 1)
+        {
+            if (now_buf == head_2)
+            {
+                status = 2;
+                head_ptr = (Buf + num - 1);
+                memcpy(UserRxBufferFS, head_ptr, (Buf + len - head_ptr));
+                next_ptr = Buf + len;
+                break;
+            }
+            status = 0;
+        }
+        if (now_buf == head_1)
+        {
+            status = 1;
+        }
+    }
+
+    return next_ptr;
+}
+
+uint32_t find_tail(uint8_t *Buf, uint32_t len)
+{
+    uint8_t status = 0;
+    uint8_t now_buf;
+    int8_t num = 0;
+    uint8_t *head_ptr = NULL;
+    uint32_t buf_len = 0;
+
+    if (Buf > UserRxBufferFS)
+    {
+        if (*(Buf - 1) == tail_1)
+        {
+            status = 1;
+        }
+    }
+    for (; num < len; num++)
+    {
+        now_buf = *(Buf + num);
+        if (status == 1)
+        {
+            if (now_buf == tail_2)
+            {
+                status = 2;
+                head_ptr = (Buf + num - 1);
+                buf_len = head_ptr - UserRxBufferFS;
+                break;
+            }
+            status = 0;
+        }
+        if (now_buf == tail_1)
+        {
+            status = 1;
+        }
+    }
+
+    return buf_len;
+}
+
 /* USER CODE END PRIVATE_FUNCTIONS_IMPLEMENTATION */
 
 /**
