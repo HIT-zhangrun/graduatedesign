@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "usbd_cdc_if.h"
+#include "fft.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -232,7 +233,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	if(GPIO_Pin == button_Pin)
 	{
-		CDC_Transmit_FS((uint8_t *)UserRxBufferFS, 100);
+		//CDC_Transmit_FS((uint8_t *)UserRxBufferFS, 100);
+		//int16_t *test = (int16_t *)UserRxBufferFS;
+		//usb_debug("%d",*test);
+    //fft_start();
 		//usb_debug("\r\n");
 	}
 }

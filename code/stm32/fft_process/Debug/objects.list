@@ -27,6 +27,7 @@
 "./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.o"
 "./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.o"
 "./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_usb.o"
+"./FFT/fft.o"
 "./Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.o"
 "./Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.o"
 "./Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.o"

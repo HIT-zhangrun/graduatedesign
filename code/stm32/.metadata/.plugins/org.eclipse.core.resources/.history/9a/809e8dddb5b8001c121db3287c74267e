@@ -1,0 +1,18 @@
+#include "fft.h"
+
+float fft_inputbuf[FFT_LENGTH*2];
+float fft_outputbuf[FFT_LENGTH];
+
+void fft_init()
+{
+	arm_cfft_radix4_init_f32(&scfft,FFT_LENGTH,0,1);
+}
+
+void fft_start()
+{
+	arm_cfft_radix4_f32(&scfft,fft_inputbuf);
+	arm_cmplx_mag_f32(fft_inputbuf,fft_outputbuf,FFT_LENGTH);
+}
+
+
+

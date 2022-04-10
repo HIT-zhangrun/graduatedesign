@@ -2,9 +2,10 @@ LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,\u672C\u57
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,\u672C\u5730/name=\u672C\u5730
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,\u672C\u5730/os=win32
 activeLaunchTarget=null\:---
-configDescList=org.eclipse.launchbar.core.descriptorType.default\:fft_process Debug
+configDescList=org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:fft_process Debug
 eclipse.preferences.version=1
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:fft_process\ Debug/activeLaunchMode=debug
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:fft_process\ Debug/activeLaunchTarget=null\:---
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:fft_range/activeLaunchMode=debug
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:fft_range/activeLaunchTarget=null\:---
 org.eclipse.launchbar.core.descriptorType.default\:fft_process\ Debug/activeLaunchMode=debug
