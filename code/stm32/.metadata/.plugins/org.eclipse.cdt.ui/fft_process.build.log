@@ -1,10 +1,10 @@
-22:09:50 **** Incremental Build of configuration Debug for project fft_process ****
+23:17:28 **** Incremental Build of configuration Debug for project fft_process ****
 make -j8 all 
 arm-none-eabi-size   fft_process.elf 
    text	   data	    bss	    dec	    hex	filename
-  73340	    364	  45124	 118828	  1d02c	fft_process.elf
+  76336	    404	  61536	 138276	  21c24	fft_process.elf
 гд???????????гд????? default.size.stdout
  
 
-22:09:51 Build Finished. 0 errors, 0 warnings. (took 623ms)
+23:17:28 Build Finished. 0 errors, 0 warnings. (took 725ms)
 
