@@ -72,7 +72,7 @@ main-build: fft_process.elf secondary-outputs
 
 # 工具调用
 fft_process.elf fft_process.map: $(OBJS) $(USER_OBJS) C:\Users\zhangrun\OneDrive\my_doc\project\graduate_design\graduatedesign\code\stm32\fft_process\STM32H750VBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "fft_process.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\zhangrun\OneDrive\my_doc\project\graduate_design\graduatedesign\code\stm32\fft_process\STM32H750VBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="fft_process.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-gcc -o "fft_process.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\zhangrun\OneDrive\my_doc\project\graduate_design\graduatedesign\code\stm32\fft_process\STM32H750VBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="fft_process.map" -Wl,--gc-sections -static -L"C:\Users\zhangrun\OneDrive\my_doc\project\graduate_design\graduatedesign\code\stm32\fft_process\CMSIS_DSP\GCC" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo '已结束构建目标： $@'
 	@echo ' '
 

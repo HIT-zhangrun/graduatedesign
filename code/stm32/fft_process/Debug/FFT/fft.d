@@ -38,7 +38,8 @@ FFT/fft.o: ../FFT/fft.c ../FFT/fft.h ../Core/Inc/main.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h \
- ../Middlewares/ST/ARM/DSP/Inc/arm_math.h
+ C:/Users/zhangrun/OneDrive/my_doc/project/graduate_design/graduatedesign/code/stm32/fft_process/CMSIS_DSP/Include/arm_math.h \
+ ../Drivers/CMSIS/Include/cmsis_compiler.h
 ../FFT/fft.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
@@ -80,4 +81,5 @@ FFT/fft.o: ../FFT/fft.c ../FFT/fft.h ../Core/Inc/main.h \
 ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h:
 ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h:
 ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h:
-../Middlewares/ST/ARM/DSP/Inc/arm_math.h:
+C:/Users/zhangrun/OneDrive/my_doc/project/graduate_design/graduatedesign/code/stm32/fft_process/CMSIS_DSP/Include/arm_math.h:
+../Drivers/CMSIS/Include/cmsis_compiler.h:
