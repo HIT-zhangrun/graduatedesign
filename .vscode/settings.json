@@ -1,8 +1,0 @@
-{
-    "C_Cpp.dimInactiveRegions": false,
-    "files.associations": {
-        "*.m": "matlab",
-        "stdarg.h": "c",
-        "usbd_conf.h": "c"
-    }
-}

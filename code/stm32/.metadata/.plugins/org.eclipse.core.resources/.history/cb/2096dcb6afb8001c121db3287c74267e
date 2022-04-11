@@ -1,9 +1,0 @@
-#include "fft.h"
-
-void fft()
-{
-	arm_cfft_radix4_instance_f32 scfft;
-}
-
-
-
