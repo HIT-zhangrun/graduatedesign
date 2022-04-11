@@ -5,6 +5,10 @@ static float32_t fft_outputbuf[FFT_LENGTH];
 static double range_test;
 static uint32_t max_x_test;
 static double gap_test;
+static uint32_t time_test1;
+static uint32_t time_test2;
+static uint32_t time_test3;
+static uint32_t time_test4;
 
 void fft_start()
 {
@@ -26,11 +30,13 @@ void fft_start()
             fft_inputbuf[2 * i + 1] = 0;
         }
     }
-
+    TIM2->CNT = 0;
     arm_cfft_radix4_f32(&scfft, fft_inputbuf);
+    time_test1 =  TIM2->CNT;
     arm_cmplx_mag_f32(fft_inputbuf, fft_outputbuf, FFT_LENGTH);
-
+    time_test2 =  TIM2->CNT;
     caculate_range();
+    time_test3 =  TIM2->CNT;
 }
 
 uint32_t find_fft_max()
