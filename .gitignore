@@ -4,3 +4,6 @@ code/stm32/fft_process/.settings/
 code/stm32/fft_process/.vscode/
 code/stm32/fft_process/Debug/
 code/stm32/fft_process/Release/
+!/code/stm32/fft_process/Debug/*.hex
+!/code/stm32/fft_process/Release/*.hex
+
