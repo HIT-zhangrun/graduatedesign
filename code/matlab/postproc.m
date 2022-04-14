@@ -4,7 +4,8 @@ close all;
 chirp_number = 10;
 adc_sample = [];
 N = 512;
-fid = fopen('../data/2022123214723.bin','rb'); %bin文件路径
+fid = fopen('../../data/2022123214723.bin','rb'); %bin文件路径
+
 raw = fread(fid,800*chirp_number,'int16');
 fclose(fid);
 
