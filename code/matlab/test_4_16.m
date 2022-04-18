@@ -14,9 +14,9 @@ param = struct( ...
     );
 
 ADC = readDCA1000('../../data/zr_4_15_1443_data/2.bin');
-ADC = ADC(1:4,1:256);
+ADC = ADC(1,1:256);
 ADC_sum = frame_chirp_lane_process(ADC);
-normal_fft(ADC_sum, param);
+normal_fft(ADC', param);
 
 data = ADC_sum;
 data_1 = data(1 : param.ADC_N/2);
@@ -92,7 +92,7 @@ retVal = adcData;
 end
 
 function ret = normal_fft(data, param)
-    n = (1 : param.N/2);
+    n = (0 : param.N/2 - 1);
     x_frequent = n * param.fs / param.N;
     x_range = x_frequent * param.T * param.c / (2 * param.B);
     FFT = fft(data, param.N, 1);
