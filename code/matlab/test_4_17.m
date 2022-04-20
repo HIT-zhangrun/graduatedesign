@@ -2,16 +2,16 @@ clc;
 clear;
 close all;
 %% 参数设置      
-ADC_N   = 600;           %采样点数
-fs      = 15e6;          %采样频率
-N       = 4096;          %FFT点数
-B       = 3.9927e9;      %带宽
-f_begin = 77e9;          %起始频率
-c       = 2.99792458e8;  %光速
-f_slope = 39.927;        %上升斜率MHz/us
+ADC_N   = 600;                 %采样点数
+fs      = 15e6;                %采样频率
+N       = 4096;                %FFT点数
+B       = 3.9927e9;            %带宽
+f_begin = 77e9;                %起始频率
+c       = 2.99792458e8;        %光速
+f_slope = 39.927;              %上升斜率MHz/us
 T       = B / (f_slope * 1e12);%上升时间
-RX      = 4;             %接收天线数
-chirp   = 16;            %计算的连续chirp数
+RX      = 4;                   %接收天线数
+chirp   = 16;                  %计算的连续chirp数
 num = 0;
 %% 文件路径名称
 fname='../../data/zr_4_18_1443_data/2_961.bin';
