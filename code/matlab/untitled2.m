@@ -5,7 +5,7 @@ close all;
 ADC_N   = 600;                 %采样点数
 fs      = 15e6;                %采样频率
 N       = 4096*4;                %FFT点数
-N_phase = 4096*4;
+
 M       = 4096;                %相位差第二FFT点数
 B       = 3.9927e9;            %带宽
 f_begin = 77e9;                %起始频率
@@ -41,39 +41,49 @@ data_origin = readDCA1000(fname);
     [x,   ] = find(FFT_Buff_ABS   == max(FFT_Buff_ABS), 1);
     [x_1, ] = find(FFT_Buff_1_ABS == max(FFT_Buff_1_ABS), 1);
     [x_2, ] = find(FFT_Buff_2_ABS == max(FFT_Buff_2_ABS), 1);
+    
+
 
     if(x_1 ~= x_2)
         fprintf("x_1 %f != x_2 %f!\n", x_1, x_2);
-        x_1 = x;
-        x_2 = x;
+        x_1 = round((x + x_1 + x_2) / 3);
+        x_2 = x_1;
     end
     phase   = FFT_Buff_ANG(x);
     phase_1 = FFT_Buff_1_ANG(x_1);
     phase_2 = FFT_Buff_2_ANG(x_2);
     delta_phase = phase_2 - phase_1;
-    n_1 = round(x_1 * fs * T / (2 * M));
-    frequent_B = n_1 * 2 / T - delta_phase / (pi * T);
-    RRRR = c * n_1 / B - delta_phase * c / 2 / pi / B;
+    n_1 = round((x_1-1) * fs * T / (2 * M));
+    frequent_B = n_1 * 2 / T + delta_phase / (pi * T);
+    RRRR = c * n_1 / B + delta_phase * c / 2 / pi / B;
     %fprintf("相位差测频%f\n", frequent_B);
-    phase_B = phase + (ADC_N - 1) * x_1 * pi / M - (ADC_N - 1) * frequent_B * T * pi / ADC_N;
+    phase_B = phase %+ (ADC_N - 1) * (x_1-1) * pi / M - (ADC_N - 1) * frequent_B * T * pi / ADC_N;
     R1 = frequent_B * T * c / (2 * B);
-    wave_length_min = c / (f_begin + B);
-    R2 = phase_B * wave_length_min / (4 * pi);
-    n_2 = round(2 * R1 / wave_length_min);
+    wave_length_max = c / f_begin;
+    R2 = phase_B * wave_length_max / (4 * pi);
+
+    n_2 = round(2 * R1 / wave_length_max);
     
     
-    delta_r1 = R1 - n_2 * wave_length_min / 2;
-    phase_f_B = delta_r1/(wave_length_min/2);
+    delta_r1 = R1 - n_2 * wave_length_max / 2;
+    phase_f_B = delta_r1/(wave_length_max/2);
     ret = phase_B - phase_f_B;
     
-    if(ret > pi/2)
-        n_2 = n_2 - 1;
-    end
-    if(ret < -pi/2)
-        n_2 = n_2 + 1;
-    end
+%     if(delta_r1 < 0)
+%         if(mod(n_2, 2) == 0)
+%             n_2 = n_2 - 2;
+%         else
+%             n_2 = n_2 - 1;
+%         end
+%     elseif(delta_r1 > 0)
+%         if(mod(n_2, 2) == 0)
+%             n_2 = n_2;
+%         else
+%             n_2 = n_2 - 1;
+%         end
+%     end
     
-    range = n_2 * (wave_length_min / 2) + R2;
+    range = n_2 * (wave_length_max / 2) + R2;
     fprintf("相位差测距:%fm\n", range);
     
     f = frequent_B;
