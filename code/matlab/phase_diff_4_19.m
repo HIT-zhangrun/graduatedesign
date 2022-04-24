@@ -15,11 +15,10 @@ f_slope = 39.927;              %上升斜率MHz/us
 T       = B / (f_slope * 1e12);%上升时间
 RX      = 4;                   %接收天线数
 chirp   = 16;                  %计算的连续chirp数
-num = 0;
+num     = 0;
 %% 文件路径名称
 fname='../../data/zr_4_18_1443_data/2_695.bin';
 %% 选择文件读取数据包
-fid = fopen(fname,'rb');%打开文件
 data_origin = readDCA1000(fname);
 
 phase_range = zeros(1, 1024);
@@ -57,61 +56,8 @@ fprintf("相位差测距标准差:%f\n", std(phase_range));
 fprintf("FFT测距均值:%f\n", mean(fft_range));
 fprintf("相位差测距均值:%f\n", mean(phase_range));
 fprintf("提升精确度:%fmm\n", 1000*(mean(fft_range)-mean(phase_range)));
-%% 处理DAC原始bin文件，输出4路复数采样点
-function [retVal] = readDCA1000(fileName)
-%% global variables
-% change based on sensor config
-numADCBits = 16; % number of ADC bits per sample
-numLanes = 4; % do not change. number of lanes is always 4 even if only 1 lane is used. unused lanes
-isReal = 0; % set to 1 if real only data, 0 if complex dataare populated with 0 %% read file and convert to signed number
-% read .bin file
-fid = fopen(fileName,'r');
-% DCA1000 should read in two's complement data
-adcData = fread(fid, 'int16');
-% if 12 or 14 bits ADC per sample compensate for sign extension
-if numADCBits ~= 16
-l_max = 2^(numADCBits-1)-1;
-adcData(adcData > l_max) = adcData(adcData > l_max) - 2^numADCBits;
-end
-fclose(fid);
-%% organize data by LVDS lane
-% for real only data
-if isReal
-% reshape data based on one samples per LVDS lane
-adcData = reshape(adcData, numLanes, []);
-%for complex data
-else
-% reshape and combine real and imaginary parts of complex number
-adcData = reshape(adcData, numLanes*2, []);
-adcData = adcData([1,2,3,4],:) + sqrt(-1)*adcData([5,6,7,8],:);
-end
-%% return receiver data
-%retVal = adcData;
-%% 单通道数据
-retVal = adcData(2, :);
-end
 
-%% 普通FFT
-function [range, f] = fft_process(data_origin)
-    %% 参数全局化
-    global ADC_N fs N M B f_begin c f_slope T RX chirp num;
-    
-    %% 处理数据
-    n = (0 : N/2-1);
-    x_frequent = n * fs / N;
-    x_range = x_frequent * T * c / (2 * B);
-    FFT = fft(data_origin, N);
-    FFT_ABS = abs(FFT(1 : N / 2));
-    [x, ] = find(FFT_ABS == max(FFT_ABS), 1);
-    range = x_range(x-1);
-    %fprintf("FFT测距频率:%fHz\n", x_frequent(x));
-    %fprintf("FFT测距:%fm\n", range);
-%     figure(3);
-%     plot(x_range, FFT_ABS);
-%     title('FFT测距');
-%     xlabel('距离/m]');ylabel('强度/dB]');
-    f = x_frequent(x-1);
-end
+
 
 %% 相位差算法
 function [range, f] = phase_diff(data_origin)
