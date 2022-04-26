@@ -17,18 +17,18 @@ RX      = 4;                   %接收天线数
 chirp   = 16;                  %计算的连续chirp数
 num     = 0;
 %% 文件路径名称
-fname='../../data/zr_4_24_1443_data/3/1_628.bin';
+fname='../../data/zr_4_24_1443_data/3/1_636.bin';
 %% 选择文件读取数据包
 data_origin = readDCA1000(fname);
 
-phase_range = zeros(1, 1024);
-f1 = zeros(1, 1024);
-fft_range = zeros(1, 1024);
-for n = 0 : 1023
+phase_range = zeros(1, 512);
+f1 = zeros(1, 512);
+fft_range = zeros(1, 512);
+for n = 0 : 511
 [phase_range(n + 1), f1(n+1)] = phase_diff(data_origin(n * ADC_N + 1 : ADC_N + ADC_N * n));
 end
 figure(1);
-for n = 0 : 1023
+for n = 0 : 511
 if(abs(phase_range(n+1) - mean(phase_range))>0.001)
     phase_range(n+1) = mean(phase_range);
 end
@@ -39,7 +39,7 @@ figure(2);
 plot(f1);
 hold on;
 
-for n = 0 : 1023
+for n = 0 : 511
 [fft_range(n + 1), f2(n+1)] = fft_process(data_origin(n * ADC_N + 1 : ADC_N + ADC_N * n));
 end
 figure(1);
@@ -163,7 +163,7 @@ function [range, f] = fft_process(data_origin)
     FFT = fft(data_origin, N);
     FFT_ABS = abs(FFT(1 : N / 2));
     [x, ] = find(FFT_ABS == max(FFT_ABS), 1);
-    range = x_range(x);
+    range = x_range(x)+0.026;
     %fprintf("FFT测距频率:%fHz\n", x_frequent(x));
     %fprintf("FFT测距:%fm\n", range);
 %     figure(3);
