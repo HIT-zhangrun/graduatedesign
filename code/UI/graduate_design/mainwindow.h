@@ -17,5 +17,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    uint8_t init_color(void);
 };
 #endif // MAINWINDOW_H
