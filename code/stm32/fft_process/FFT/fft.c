@@ -9,7 +9,7 @@ static double test_value4;
 static double test_value5;
 
 static uint16_t ADC_N   = 600;
-static double   chirp   = 16;
+//static double   chirp   = 16;
 static double   fs      = 2.667e6;
 static double   N       = FFT_LENGTH;
 static double   T       = 235e-6;
@@ -29,7 +29,7 @@ void fft_start()
 uint32_t find_fft_max()
 {
     float32_t max = 0;
-    uint32_t max_x;
+    uint32_t max_x = -1;
     for (int32_t i = 0; i < FFT_LENGTH / 2; i++)
     {
         if (max < fft_abs_buf[i])
