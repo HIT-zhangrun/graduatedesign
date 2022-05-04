@@ -65,6 +65,12 @@ void Error_Handler(void);
 #define green_GPIO_Port GPIOC
 #define blue_Pin GPIO_PIN_2
 #define blue_GPIO_Port GPIOC
+#define SPI_CSN_Pin GPIO_PIN_2
+#define SPI_CSN_GPIO_Port GPIOA
+#define SPI_CE_Pin GPIO_PIN_3
+#define SPI_CE_GPIO_Port GPIOA
+#define SPI_IRQ_Pin GPIO_PIN_4
+#define SPI_IRQ_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

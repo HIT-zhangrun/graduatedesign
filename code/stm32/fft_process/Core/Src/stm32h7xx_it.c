@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "fft.h"
+#include "nrf24l01.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -250,8 +251,17 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
         // CDC_Transmit_FS((uint8_t *)UserRxBufferFS, 100);
         // int16_t *test = (int16_t *)UserRxBufferFS;
         // usb_debug("%d",*test);
-        phase_diff();
+        //phase_diff();
         // usb_debug("\r\n");
+    	uint8_t test_buf[33] = "Hello!";
+    	if(nrf_tx_pkg(test_buf) == TX_OK)
+    	{
+    		usb_debug("send\r\n");
+    	}
+    	else
+    	{
+    		usb_debug("nosend%x\r\n" ,nrf_tx_pkg(test_buf));
+    	}
     }
 }
 /* USER CODE END 1 */
