@@ -253,15 +253,16 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
         // usb_debug("%d",*test);
         //phase_diff();
         // usb_debug("\r\n");
-    	uint8_t test_buf[33] = "Hello!";
-    	if(nrf_tx_pkg(test_buf) == TX_OK)
-    	{
-    		usb_debug("send\r\n");
-    	}
-    	else
-    	{
-    		usb_debug("nosend%x\r\n" ,nrf_tx_pkg(test_buf));
-    	}
+    	//uint8_t test_buf[33] = "Hello!";
+    	//if(nrf_tx_pkg(test_buf) == TX_OK)
+    	//{
+    		//usb_debug("send\r\n");
+    	//}
+    	//else
+    	//{
+    		//usb_debug("nosend%x\r\n" ,nrf_tx_pkg(test_buf));
+    	//}
+    	//read_write_byte(0xFF);
     }
 }
 /* USER CODE END 1 */
