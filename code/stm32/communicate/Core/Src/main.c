@@ -102,10 +102,9 @@ int main(void)
   {
 	  if(nrf_rx_pkg(test_buf) == 0)
 	      {
-		      test_buf[7]=0;//加入字符串结束符
+		      test_buf[32]=0;//加入字符串结束符
 	          usb_debug("%s",test_buf);
 	      }
-	  HAL_Delay(10);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

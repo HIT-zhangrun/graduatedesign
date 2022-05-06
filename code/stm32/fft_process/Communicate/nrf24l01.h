@@ -14,14 +14,14 @@
 #include "usbd_cdc_if.h"
 
 //命令代码
-#define NRF_READ    0x00//读命令
-#define NRF_WRITE   0x20//写命令
+#define NRF_READ_REG    0x00//读命令
+#define NRF_WRITE_REG   0x20//写命令
 #define RD_RX_PLOAD     0x61//读RX有效数据
 #define WR_TX_PLOAD     0xA0//写TX有效数据
 #define FLUSH_TX        0xE1//清除TX FIFO寄存器
 #define FLUSH_RX        0xE2//清除RX FIFO寄存器
 #define REUSE_TX_PL     0xE3//重新使用上一包发射的有效数据
-#define NRF_NOP             0xFF//空操作
+#define NOP             0xFF//空操作
 
 //寄存器地址
 #define CONFIG          0x00
@@ -69,23 +69,17 @@
 #define TX_OK       0x20//TX发送完成中断
 #define RX_OK       0x40//接收到数据中断
 
-typedef enum
-{
-    NRF_ERROR = -1,
-    NRF_OK = 0,
-} nrf24l01_status_e;
-
-
-void NRF24L01_Init(void);
-uint8_t nrf_check(void);
+void nrf_init(void);
 uint8_t read_write_byte(uint8_t send_byte);
-nrf24l01_status_e nrf_read(uint8_t reg, uint8_t *buf, uint8_t len);
-nrf24l01_status_e nrf_write(uint8_t reg, uint8_t *buf, uint8_t len);
-nrf24l01_status_e nrf_cmd(uint8_t cmd, uint8_t reg, uint8_t *buf, uint8_t len);
+uint8_t nrf_check(void);
+uint8_t nrf_write_reg(uint8_t reg,uint8_t value);
+uint8_t nrf_read_reg(uint8_t reg);
+uint8_t nrf_read_buf(uint8_t reg, uint8_t *buf, uint8_t len);
+uint8_t nrf_write_buf(uint8_t reg, uint8_t *buf, uint8_t len);
+uint8_t nrf_send_pkg(uint8_t *buf);
+uint8_t nrf_receive_pkg(uint8_t *buf);
 void nrf_rx_mode(void);
 void nrf_tx_mode(void);
 void nrf_low_power_mode(void);
-nrf24l01_status_e nrf_send(uint8_t *buf, uint8_t len);
-
 
 #endif /* NRF24L01_H_ */

@@ -67,7 +67,7 @@ void PeriphCommonClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	uint8_t test_buf[33] = "Hello!";
+	uint8_t test_buf[32] = "Hello!";
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -97,14 +97,16 @@ int main(void)
   /* USER CODE BEGIN 2 */
     HAL_TIM_Base_Start_IT(&htim2);
 
-    NRF24L01_Init();
-    while(nrf_check())
+    nrf_init();
+
+    while(nrf_check() != 0)
     {
-        usb_debug("硬件查寻不到NRF24L01无线模块\n");
+        usb_debug("no link\n");
         HAL_Delay(1000);
     }
 
     nrf_tx_mode();
+
 
   /* USER CODE END 2 */
 
@@ -112,8 +114,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  //nrf_tx_pkg(test_buf);
-	  //HAL_Delay(500);
+	  nrf_send_pkg(test_buf);
+	  //usb_debug("%d", status);
+	  //HAL_Delay(1000);
 
     /* USER CODE END WHILE */
 
