@@ -92,15 +92,16 @@ int main(void)
   MX_SPI1_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-    NRF24L01_Init();
-    nrf_rx_mode();
+  nrf_init();
+
+  nrf_rx_mode();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(nrf_rx_pkg(test_buf) == 0)
+	  if(nrf_receive_pkg(test_buf) == 0)
 	      {
 		      test_buf[32]=0;//加入字符串结束符
 	          usb_debug("%s",test_buf);

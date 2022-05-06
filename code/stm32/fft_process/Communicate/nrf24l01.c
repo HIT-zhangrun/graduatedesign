@@ -18,6 +18,11 @@ void nrf_init(void)
 {
     NRF24L01_CE_LOW;          //使能24L01
     NRF24L01_SPI_CSN_DISABLE; // SPI片选取消
+    while(nrf_check() != 0)
+    {
+        usb_debug("no link\n");
+        HAL_Delay(1000);
+    }
 }
 
 /**
@@ -145,7 +150,7 @@ uint8_t nrf_write_buf(uint8_t reg, uint8_t *buf, uint8_t len)
  */
 uint8_t nrf_send_pkg(uint8_t *buf)
 {
-    uint8_t sta;
+    uint8_t status;
     NRF24L01_CE_LOW;
     nrf_write_buf(WR_TX_PLOAD, buf, TX_PLOAD_WIDTH); //写数据到TX BUF  32个字节
     NRF24L01_CE_HIGH;                                  //启动发送
@@ -153,14 +158,14 @@ uint8_t nrf_send_pkg(uint8_t *buf)
     while (NRF24L01_IRQ_PIN_READ != 0)
         ; //等待发送完成
 
-    sta = nrf_read_reg(STATUS);                 //读取状态寄存器的值
-    nrf_write_reg(NRF_WRITE_REG + STATUS, sta); //清除TX_DS或MAX_RT中断标志
-    if (sta & MAX_TX)                           //达到最大重发次数
+    status = nrf_read_reg(STATUS);                 //读取状态寄存器的值
+    nrf_write_reg(NRF_WRITE_REG + STATUS, status); //清除TX_DS或MAX_RT中断标志
+    if (status & MAX_TX)                           //达到最大重发次数
     {
         nrf_write_reg(FLUSH_TX, 0xff); //清除TX FIFO寄存器
         return MAX_TX;
     }
-    if (sta & TX_OK) //发送完成
+    if (status & TX_OK) //发送完成
     {
         return TX_OK;
     }
@@ -174,10 +179,10 @@ uint8_t nrf_send_pkg(uint8_t *buf)
  */
 uint8_t nrf_receive_pkg(uint8_t *buf)
 {
-    uint8_t sta;
-    sta = nrf_read_reg(STATUS);                 //读取状态寄存器的值
-    nrf_write_reg(NRF_WRITE_REG + STATUS, sta); //清除TX_DS或MAX_RT中断标志
-    if (sta & RX_OK)                            //接收到数据
+    uint8_t status;
+    status = nrf_read_reg(STATUS);                 //读取状态寄存器的值
+    nrf_write_reg(NRF_WRITE_REG + STATUS, status); //清除TX_DS或MAX_RT中断标志
+    if (status & RX_OK)                            //接收到数据
     {
         nrf_read_buf(RD_RX_PLOAD, buf, RX_PLOAD_WIDTH); //读取数据
         nrf_write_reg(FLUSH_RX, 0xff);                    //清除RX FIFO寄存器

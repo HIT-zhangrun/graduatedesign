@@ -69,19 +69,17 @@
 #define TX_OK       0x20//TX发送完成中断
 #define RX_OK       0x40//接收到数据中断
 
-
-void NRF24L01_Init(void);
+void nrf_init(void);
 uint8_t read_write_byte(uint8_t send_byte);
 uint8_t nrf_check(void);
 uint8_t nrf_write_reg(uint8_t reg,uint8_t value);
 uint8_t nrf_read_reg(uint8_t reg);
-uint8_t nrf_read_buf(uint8_t reg, uint8_t *pBuf, uint8_t len);
-uint8_t nrf_write_buf(uint8_t reg, uint8_t *pBuf, uint8_t len);
-uint8_t nrf_tx_pkg(uint8_t *txbuf);
-uint8_t nrf_rx_pkg(uint8_t *rxbuf);
+uint8_t nrf_read_buf(uint8_t reg, uint8_t *buf, uint8_t len);
+uint8_t nrf_write_buf(uint8_t reg, uint8_t *buf, uint8_t len);
+uint8_t nrf_send_pkg(uint8_t *buf);
+uint8_t nrf_receive_pkg(uint8_t *buf);
 void nrf_rx_mode(void);
 void nrf_tx_mode(void);
 void nrf_low_power_mode(void);
-
 
 #endif /* NRF24L01_H_ */

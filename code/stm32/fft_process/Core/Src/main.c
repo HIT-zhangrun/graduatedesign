@@ -68,6 +68,7 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 	uint8_t test_buf[32] = "Hello!";
+	uint8_t status;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -99,11 +100,7 @@ int main(void)
 
     nrf_init();
 
-    while(nrf_check() != 0)
-    {
-        usb_debug("no link\n");
-        HAL_Delay(1000);
-    }
+
 
     nrf_tx_mode();
 
@@ -114,8 +111,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  nrf_send_pkg(test_buf);
-	  //usb_debug("%d", status);
+	  status = nrf_send_pkg(test_buf);
+	  usb_debug("%d", status);
 	  //HAL_Delay(1000);
 
     /* USER CODE END WHILE */
