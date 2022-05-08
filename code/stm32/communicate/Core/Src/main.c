@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "i2c.h"
 #include "spi.h"
 #include "usb_device.h"
 #include "gpio.h"
@@ -26,6 +27,7 @@
 /* USER CODE BEGIN Includes */
 #include "usbd_cdc_if.h"
 #include "nrf24l01.h"
+#include "oled_128x32.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -68,7 +70,8 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
 	uint8_t test_buf[33];
-
+  uint8_t test[] = "test12345678";
+  uint8_t num = 0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -91,16 +94,36 @@ int main(void)
   MX_GPIO_Init();
   MX_SPI1_Init();
   MX_USB_DEVICE_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   nrf_init();
 
   nrf_rx_mode();
+  oled_init();
+
+
+  //OLED_BOOL_DrawStr(0, 0, test, 0);
+  //OLED_Refresh();
+  oled_fill(0x00);
+  //oled_draw_bmp(0, 0, 6, 8, ASCII + 6 * ('A' - 32));
+  //oled_refresh();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  oled_fill(0x00);
+	  oled_draw_bmp(num, num, 6, 8, ASCII + 6 * ('A' - 32));\
+
+	  oled_refresh();
+	    num++;
+	    if(num >= 24)
+	    {
+	    	num =0;
+	    }
+	    HAL_Delay(1000);
 	  if(nrf_receive_pkg(test_buf) == 0)
 	      {
 		      test_buf[32]=0;//加入字符串结束符
