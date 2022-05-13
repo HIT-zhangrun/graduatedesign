@@ -6,6 +6,7 @@
  */
 
 #include "oled_128x32.h"
+#include "font_lib.h"
 
 static uint8_t oled_buff[4][128];   // 缓冲区
 static uint8_t oled_buff_flag[128]; // 刷新标志
@@ -81,7 +82,7 @@ void oled_fill(uint8_t data)
         oled_write_data(data);
     }
     //更新缓存
-    memset(oled_buff, data, sizeof(oled_buff));
+    memset(oled_buff, (int)data, sizeof(oled_buff));
     memset(oled_buff_flag, 0, sizeof(oled_buff_flag));
 }
 
@@ -134,39 +135,65 @@ void oled_refresh()
     oled_area_refresh(0, OLED_WIDTH - 1);
 }
 
-
-
-uint8_t oled_draw_bmp(uint8_t pos_x, uint8_t pos_y, uint8_t width, uint8_t length, uint8_t *data)
+void oled_draw_bmp(uint8_t pos_x, uint8_t pos_y, uint8_t width, uint8_t length, uint8_t *data)
 {
+	uint8_t *data_p = data;
     for (uint8_t x = pos_x; x < pos_x + width; x++)
     {
         if (x == OLED_WIDTH)
         {
             break;
         }
-        oled_draw_column(x, pos_y, data, length);
-        data += length / 8;
+        oled_draw_column(x, pos_y, data_p, length);
+        data_p += length / 8;
     }
 }
 
 void oled_draw_column(uint8_t pos_x, uint8_t pos_y, uint8_t *data, uint8_t length)
 {
-    uint32_t column_data = 0;
-    uint8_t page_start = pos_y / 8;
-    uint8_t *column_data_p;
-    uint8_t offset = pos_y % 8 - 1;
     uint8_t page_length = length / 8;
+    uint32_t column_data = *data;
+    uint8_t *column_data_p;
     column_data_p = (uint8_t *)(&column_data);
 
     for (uint8_t num = 0; num < page_length; num++)
     {
-        *(column_data_p + num + page_start) = *(data + num);
+        *(column_data_p + num) = *(data + num);
     }
-    column_data = column_data << offset;
+
+    column_data = column_data << pos_y;
     column_data_p = (uint8_t *)(&column_data);
     for (uint8_t num = 0; num < 4; num++)
     {
-        oled_buff[page_start + num][pos_x] |= *((uint8_t *)(column_data_p + num));
+        oled_buff[num][pos_x] |= *((uint8_t *)(column_data_p + num));
     }
     oled_buff_flag[pos_x] = 1;
 }
+
+void oled_putchar(uint8_t pos_x, uint8_t pos_y, uint8_t character)
+{
+    oled_draw_bmp(pos_x, pos_y, 6, 8, (uint8_t *)ASCII + 6 * (character - 32));
+}
+
+void oled_putchars(uint8_t pos_x, uint8_t pos_y, uint8_t *str)
+{
+    uint8_t x_offset = 0;
+    uint8_t y_offset = 0;
+    uint8_t str_offset = 0;
+    while(*(str + str_offset) != '\0')
+    {
+        oled_putchar(pos_x + x_offset, pos_y + y_offset, *(str + str_offset));
+        x_offset += 6;
+        str_offset ++;
+        if(pos_x + x_offset > OLED_WIDTH - 6)
+        {
+            x_offset = 0;
+            y_offset += 8;
+        }
+    }
+}
+
+
+
+
+
