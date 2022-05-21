@@ -1,31 +1,39 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2022 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file           : main.c
+ * @brief          : Main program body
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2022 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "spi.h"
 #include "tim.h"
+#include "usart.h"
 #include "usb_device.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "nrf24l01.h"
+#include "radar_recv.h"
+
+static uint8_t radar_ready = 0;
+static uint8_t radar2_ready = 0;
+static float range1 = 0;
+static float range2 = 0;
+static float range3 = 0;
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -67,8 +75,9 @@ void PeriphCommonClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	uint8_t test_buf[32] = "Hello!";
-	uint8_t status;
+    uint8_t test_buf[32] = "ZR000000000000";
+    //uint8_t status;
+    uint32_t i = 700;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -95,30 +104,101 @@ int main(void)
   MX_USB_DEVICE_Init();
   MX_TIM2_Init();
   MX_SPI1_Init();
+  MX_USART2_UART_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-    HAL_TIM_Base_Start_IT(&htim2);
-
+    //HAL_TIM_Base_Start_IT(&htim2);
+  	//nrf初始�???
     nrf_init();
-
-
-
     nrf_tx_mode();
 
-
+    init_radar();
+    float *ret = NULL;
+    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+    __HAL_TIM_SetCompare(&htim2, TIM_CHANNEL_1, i);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-	  status = nrf_send_pkg(test_buf);
-	  usb_debug("%d", status);
-	  //HAL_Delay(1000);
+    while (1)
+    {
+    	switch(radar_ready)
+    	{
+    		case 0:
+    		{
+    			ret = trig_recv_data();
+    			if(NULL != ret)
+    			{
+    			    radar_ready = 1;
+    			    range1 = *ret;
+    			    __HAL_TIM_SetCompare(&htim2, TIM_CHANNEL_1, 700);
+    			    HAL_Delay(7000);//HAL_Delay(30000);
+    			 }
+    			 break;
+    		}
+    		case 1:
+    		{
+    			ret = trig_recv_data();
+    			if(NULL != ret)
+    			{
+    			    radar_ready = 2;
+    			    range2 = *ret;
+    			    __HAL_TIM_SetCompare(&htim2, TIM_CHANNEL_1, 2500);
+
+    			    HAL_Delay(7000);//HAL_Delay(30000);
+    			}
+    			break;
+    		}
+    		case 2:
+    		{
+    			ret = trig_recv_data2();
+    			if(NULL != ret)
+    			{
+    				range3 = *ret;
+    				radar_ready = 3;
+    			}
+    			break;
+    		}
+    		case 3:
+    		{
+    			float *range_p;
+    			range_p = &range1;
+    			memcpy(&(test_buf[2]), range_p, 4);
+    			range_p = &range2;
+    			memcpy(&(test_buf[6]), range_p, 4);
+    			range_p = &range3;
+    			memcpy(&(test_buf[10]), range_p, 4);
+    			nrf_send_pkg(test_buf);
+    		    HAL_GPIO_WritePin(GPIOC, green_Pin, GPIO_PIN_RESET);
+    		    HAL_Delay(200);
+    		    HAL_GPIO_WritePin(GPIOC, green_Pin, GPIO_PIN_SET);
+    			radar_ready = 0;
+    		}
+    	}
+
+    	/*float *ret1 = trig_recv_data();
+
+        if(NULL != ret1)
+        {
+        	//uint32_t temp = *(uint32_t *)ret;
+        	memcpy(&(test_buf[2]), ret1, 4);
+        	nrf_send_pkg(test_buf);
+        	__HAL_TIM_SetCompare(&htim2, TIM_CHANNEL_1, i);
+        	HAL_Delay(1000);
+        	if(i == 700)
+        	{
+        		i = 2500;
+        	}
+        	else
+        	{
+        		i = 700;
+        	}
+        }*/
 
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
+    }
   /* USER CODE END 3 */
 }
 
@@ -210,11 +290,11 @@ void PeriphCommonClock_Config(void)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
-  __disable_irq();
-  while (1)
-  {
-  }
+    /* User can add his own implementation to report the HAL error return state */
+    __disable_irq();
+    while (1)
+    {
+    }
   /* USER CODE END Error_Handler_Debug */
 }
 
@@ -229,8 +309,8 @@ void Error_Handler(void)
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+    /* User can add his own implementation to report the file name and line number,
+       ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

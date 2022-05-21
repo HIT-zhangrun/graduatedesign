@@ -351,10 +351,11 @@ uint8_t usb_debug(const char *format, ...)
 {
     va_list args;
     uint32_t length;
+    uint8_t buff[APP_TX_DATA_SIZE];
     va_start(args, format);
-    length = vsnprintf((char *)UserTxBufferFS, APP_TX_DATA_SIZE, (char *)format, args);
+    length = vsnprintf((char *)buff, APP_TX_DATA_SIZE, (char *)format, args);
     va_end(args);
-    CDC_Transmit_FS(UserTxBufferFS, length);
+    CDC_Transmit_FS(buff, length);
 
     return 0;
 }

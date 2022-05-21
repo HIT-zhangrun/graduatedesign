@@ -96,12 +96,10 @@ int main(void)
     MX_I2C1_Init();
     /* USER CODE BEGIN 2 */
 
-    //nrf_init();
-    //nrf_rx_mode();
-    oled_init();
-
-
-    oled_fill(0x00);
+    nrf_init();
+    nrf_rx_mode();
+    //oled_init();
+    //oled_fill(0x00);
 
 
     /* USER CODE END 2 */
@@ -111,14 +109,14 @@ int main(void)
     while (1)
     {
         //oled_putchar(15, 13, 'Z');
-        oled_putchars(64, 15, test);
-        oled_refresh();
+        //oled_putchars(64, 15, test);
+        //oled_refresh();
         
-        //if (nrf_receive_pkg(test_buf) == 0)
-        //{
-        //    test_buf[32] = 0; //加入字符串结束符
-        //    usb_debug("%s", test_buf);
-        //}
+        if (nrf_receive_pkg(test_buf) == 0)
+        {
+            test_buf[32] = 0; //加入字符串结束符
+            usb_debug("%s", test_buf);
+        }
         /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */

@@ -1,32 +1,28 @@
 #include "fft.h"
 
-static float32_t fft_buf[FFT_LENGTH * 2];
-static float32_t fft_abs_buf[FFT_LENGTH];
-static double test_value1;
-static double test_value2;
-static double test_value3;
-static double test_value4;
-static double test_value5;
 
-static uint16_t ADC_N   = 600;
+static uint16_t ADC_N   = 460;
 //static double   chirp   = 16;
-static double   fs      = 2.667e6;
+static double   fs      = 2e6;
 static double   N       = FFT_LENGTH;
 static double   T       = 235e-6;
 static double   B       = 3.13e9;
-static double   f_begin = 78e9;
+static double   f_begin = 77e9;
 static double   c       = 2.99792458e8;
 static double   pi      = acos(-1);
 
-void fft_start()
+uint8_t fft_start(float32_t *fft_buf, float32_t *fft_abs_buf)
 {
-    arm_cfft_radix4_instance_f32 scfft;
+	//arm_cfft_f32(&arm_cfft_sR_f32_len2048, fft_buf, 0, 1);
+	arm_cfft_radix4_instance_f32 scfft;
     arm_cfft_radix4_init_f32(&scfft, FFT_LENGTH, 0, 1);
     arm_cfft_radix4_f32(&scfft, fft_buf);
     arm_cmplx_mag_f32(fft_buf, fft_abs_buf, FFT_LENGTH);
+
+    return 0;
 }
 
-uint32_t find_fft_max()
+uint32_t find_fft_max(float32_t *fft_abs_buf)
 {
     float32_t max = 0;
     uint32_t max_x = -1;
@@ -41,43 +37,48 @@ uint32_t find_fft_max()
     return max_x;
 }
 
-double caculate_range()
+float caculate_range(float32_t *fft_abs_buf)
 {
-    uint32_t max_x = find_fft_max();
-    double range = (max_x * gap);
+    uint32_t max_x = find_fft_max(fft_abs_buf);
+    float range = (max_x * gap);
 
     return range;
 }
 
-double just_fft()
+float just_fft(recv_pack_signal_s recv_pack_signal)
 {
-    int16_t temp_buf;
-    double range;
-    clear_buf();
-    for (int32_t i = 0; i < FFT_LENGTH; i++)
+    uint16_t *buf = recv_pack_signal.data;
+    float32_t fft_buf[FFT_LENGTH * 2] = {0};
+    float32_t fft_abs_buf[FFT_LENGTH];
+    //uint16_t temp_buf;
+    float range;
+    float32_t aver = 0;
+    for(uint32_t i = 0; i < 460; i++)
     {
-        if (i < ADC_N)
-        {
-            temp_buf = UserRxBufferFS[2 * i] | (UserRxBufferFS[2 * i + 1] << 8);
-            fft_buf[2 * i] = (float32_t)(temp_buf);
-            fft_buf[2 * i + 1] = 0;
-        }
-        else
-        {
-            fft_buf[2 * i] = 0;
-            fft_buf[2 * i + 1] = 0;
-        }
+        aver += (float32_t)buf[i];
     }
-    fft_start();
-    range = caculate_range();
+    aver /= 460;
+
+    //clear_buf();
+    for (int32_t i = 0; i < ADC_N; i++)
+    {
+        fft_buf[2 * i] = (float32_t)buf[i];
+        fft_buf[2 * i] -= aver;
+        fft_buf[2 * i + 1] = 0;
+    }
+    fft_start(fft_buf, fft_abs_buf);
+    range = caculate_range(fft_abs_buf);
 
     return range;
 }
 
-double phase_diff()
+
+float phase_diff(recv_pack_signal_s recv_pack_signal)
 {
+	uint32_t max_x;
     uint32_t max_x_1;
     uint32_t max_x_2;
+    double phase;
     double phase_1;
     double phase_2;
     double phase_diff;
@@ -87,77 +88,84 @@ double phase_diff()
     double phase_B;
     double R1;
     double R2;
-    double wave_length_min;
-    double range;
-    TIM2->CNT = 0;
+    double wave_length_max;
+
+
+    uint16_t *buf = recv_pack_signal.data;
+
+
+    float range;
+    float32_t aver = 0;
+    for(uint32_t i = 0; i < 460; i++)
+    {
+        aver += (float32_t)buf[i];
+    }
+    aver /= 460;
 
     int16_t temp_buf;
-    clear_buf();
-    for (int32_t i = 0; i < FFT_LENGTH; i++)
-    {
-        if (i < ADC_N / 2)
-        {
-            temp_buf = UserRxBufferFS[2 * i] | (UserRxBufferFS[2 * i + 1] << 8);
-            fft_buf[2 * i] = (float32_t)(temp_buf);
-            fft_buf[2 * i + 1] = 0;
-        }
-        else
-        {
-            fft_buf[2 * i] = 0;
-            fft_buf[2 * i + 1] = 0;
-        }
-    }
+    float32_t fft_buf[FFT_LENGTH * 2] = {0};
+    float32_t fft_buf1[FFT_LENGTH * 2] = {0};
+    float32_t fft_buf2[FFT_LENGTH * 2] = {0};
+    float32_t fft_abs_buf[FFT_LENGTH] = {0};
 
-    fft_start();
-    max_x_1 = find_fft_max();
-    phase_1 = atan2(fft_buf[max_x_1 * 2 + 1], fft_buf[max_x_1 * 2]);
+    for (int32_t i = 0; i < ADC_N; i++)
+    {
+        fft_buf[2 * i] = (float32_t)buf[i];
+        fft_buf[2 * i] -= aver;
+        fft_buf[2 * i + 1] = 0;
+    }
+    fft_start(fft_buf, fft_abs_buf);
+    max_x = find_fft_max(fft_abs_buf);
+
+    for (int32_t i = 0; i < ADC_N / 2; i++)
+    {
+        fft_buf1[2 * i] = (float32_t)buf[i];
+        fft_buf1[2 * i] -= aver;
+        fft_buf1[2 * i + 1] = 0;
+    }
+    fft_start(fft_buf1, fft_abs_buf);
+    max_x_1 = find_fft_max(fft_abs_buf);
+    //phase_1 = atan2(fft_buf[max_x_1 * 2 + 1], fft_buf[max_x_1 * 2]);
     
-    clear_buf();
-    for (int32_t i = 0; i < FFT_LENGTH; i++)
+    for (int32_t i = 0; i < ADC_N / 2; i++)
     {
-        if (i < ADC_N / 2)
-        {
-            temp_buf = UserRxBufferFS[2 * i + ADC_N] | (UserRxBufferFS[2 * i + 1 + ADC_N] << 8);
-            fft_buf[2 * i] = (float32_t)(temp_buf);
-            fft_buf[2 * i + 1] = 0;
-        }
-        else
-        {
-            fft_buf[2 * i] = 0;
-            fft_buf[2 * i + 1] = 0;
-        }
+        fft_buf2[2 * i] = (float32_t)buf[i + ADC_N / 2];
+        fft_buf2[2 * i] -= aver;
+        fft_buf2[2 * i + 1] = 0;
     }
-
-    fft_start();
-    max_x_2 = find_fft_max();
-    phase_2 = atan2(fft_buf[max_x_2 * 2 + 1], fft_buf[max_x_2 * 2]);
+    fft_start(fft_buf2, fft_abs_buf);
+    max_x_2 = find_fft_max(fft_abs_buf);
+    if(max_x_1 != max_x_2)
+    {
+    	max_x_1 = round((max_x_1 + max_x_2 + max_x) / 3);
+    	max_x_2 = max_x_1;
+    }
+    phase   = atan2(fft_buf[max_x_1 * 2 + 1], fft_buf[max_x_1 * 2]);
+    phase_1 = atan2(fft_buf1[max_x_1 * 2 + 1], fft_buf1[max_x_1 * 2]);
+    phase_2 = atan2(fft_buf2[max_x_2 * 2 + 1], fft_buf2[max_x_2 * 2]);
     
 
     phase_diff = phase_2 - phase_1;
-    n_1 = (uint32_t)round((max_x_1 * ADC_N) / (2 * N));
-    frequent_B = (n_1 * 2 * fs) / ADC_N + (fs * phase_diff) / (pi * ADC_N);
-    phase_B = phase_1 + ((ADC_N - 1) * (max_x_1 + 1) * pi) / N - ((ADC_N - 1) * frequent_B * T * pi) / ADC_N;
-    R1 = (frequent_B * T * c) / (2 * B);
-    wave_length_min = c / (f_begin + B);
-    R2 = (phase_B * wave_length_min) / (4 * pi);
-    n_2 = (uint32_t)round((2 * R1) / wave_length_min);
-    range = n_2 * (wave_length_min / 2) + R2;
 
-    test_value1 = phase_1;
-    test_value2 = phase_2;
-    test_value4 = max_x_1;
-    test_value5 = TIM2->CNT;
-    test_value3 = range;
+    n_1 = round(max_x_1 * fs * T / (2 * FFT_LENGTH));
+    frequent_B = n_1 * 2 / T - phase_diff / (pi * T);
+    phase_B = phase;
+    R1 = frequent_B * T * c / (2 * B);
+    wave_length_max = c / f_begin;
+    R2 = phase_B * wave_length_max / (4 * pi);
+    n_2 = round(2 * R1 / wave_length_max);
+    double delta_r1 = R1 - n_2 * wave_length_max / 2;
+    double phase_f_B = delta_r1/(wave_length_max/2);
+
+    if(phase_B - phase_f_B > pi/2)
+        n_2 = n_2 - 1;
+    if(phase_f_B - phase_B > pi/2)
+        n_2 = n_2 + 1;
+
+    range = n_2 * (wave_length_max / 2) + R2;
+
+
 
     return range;
-}
-
-void clear_buf()
-{
-    for (int32_t i = 0; i < FFT_LENGTH; i++)
-    {
-        fft_buf[2 * i]     = 0;
-        fft_buf[2 * i + 1] = 0;
-    }
 }
 
