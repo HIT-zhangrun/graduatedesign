@@ -1219,7 +1219,19 @@ release\mainwindow.obj: ..\graduate_design\mainwindow.cpp ..\graduate_design\mai
 		C:\Qt\6.3.0\msvc2019_64\include\QtMultimedia\qtmultimediaglobal.h \
 		C:\Qt\6.3.0\msvc2019_64\include\QtMultimedia\qtmultimedia-config.h \
 		C:\Qt\6.3.0\msvc2019_64\include\QtMultimedia\qtmultimediaexports.h \
-		C:\Qt\6.3.0\msvc2019_64\include\QtMultimedia\qaudio.h
+		C:\Qt\6.3.0\msvc2019_64\include\QtMultimedia\qaudio.h \
+		C:\Qt\6.3.0\msvc2019_64\include\QtMultimedia\QMediaPlayer \
+		C:\Qt\6.3.0\msvc2019_64\include\QtMultimedia\qmediaplayer.h \
+		C:\Qt\6.3.0\msvc2019_64\include\QtMultimedia\qmediaenumdebug.h \
+		C:\Qt\6.3.0\msvc2019_64\include\QtCore\qmetaobject.h \
+		C:\Qt\6.3.0\msvc2019_64\include\QtMultimedia\QSoundEffect \
+		C:\Qt\6.3.0\msvc2019_64\include\QtMultimedia\qsoundeffect.h \
+		C:\Qt\6.3.0\msvc2019_64\include\QtCore\QTimer \
+		C:\Qt\6.3.0\msvc2019_64\include\QtCore\qtimer.h \
+		C:\Qt\6.3.0\msvc2019_64\include\QtCore\qbasictimer.h \
+		C:\Qt\6.3.0\msvc2019_64\include\QtCore\QDateTime \
+		C:\Qt\6.3.0\msvc2019_64\include\QtCore\qdatetime.h \
+		C:\Qt\6.3.0\msvc2019_64\include\QtCore\qcalendar.h
 
 release\serial.obj: ..\graduate_design\serial\serial.cpp ..\graduate_design\serial\serial.h \
 		C:\Qt\6.3.0\msvc2019_64\include\QtWidgets\QWidget \
