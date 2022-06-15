@@ -13,7 +13,7 @@ function [range, f] = fft_process(data_origin, p)
     plot(x_range, FFT_ABS);
     title('FFT测距');
     xlabel('距离/m]');ylabel('强度/dB]');
-    %hold on;
+    hold on;
     %plot(x_range, 4.5*ca_cfar(FFT_ABS, 1800, 10));
     %plot(x_range, 6*os_cfar(FFT_ABS, 1800, 10));
 

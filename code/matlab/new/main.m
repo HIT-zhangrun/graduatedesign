@@ -2,13 +2,13 @@ clc;
 clear;
 close all;
 
-% p = param_init(1);
-% file = '../../data/zr_4_24_1443_data/1/2_749.bin';
-% raw_data = raw_data_process(file, p);
-% fft_process(raw_data, p);
-% file = '../../data/zr_4_24_1443_data/1/2_768.bin';
-% raw_data = raw_data_process(file, p);
-% fft_process(raw_data, p);
+p = param_init(1);
+file = '../../data/zr_4_24_1443_data/1/2_749.bin';
+raw_data = raw_data_process(file, p);
+fft_process(raw_data, p);
+file = '../../data/zr_4_24_1443_data/1/2_768.bin';
+raw_data = raw_data_process(file, p);
+fft_process(raw_data, p);
 
 % p = param_init(2);
 % file = '../../data/zr_4_24_1443_data/2/2_767.bin';
